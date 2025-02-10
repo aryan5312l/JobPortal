@@ -1,0 +1,28 @@
+''' 
+        job_title_tag = soup.find('h2', class_='jobTitle')
+        job_title = job_title_tag.text.strip() if job_title_tag else "N/A"
+
+        company_name_tag = soup.find('span', {'data-testid': 'company-name'})
+        company_name = company_name_tag.text.strip() if company_name_tag else "N/A"
+
+        location_tag = soup.find('div', {'data-testid': 'text-location'})
+        location = location_tag.text.strip() if location_tag else "N/A"
+
+        job_type_tag = soup.find('div', {'data-testid': 'attribute_snippet_testid'})
+        job_type = job_type_tag.text.strip() if job_type_tag else "N/A"
+
+        job_description_tag = soup.find('div', {'data-testid': 'jobsnippet_footer'})
+        job_description = job_description_tag.text.strip() if job_description_tag else "N/A"
+
+        job_link_tag = soup.find('a', class_='jcs-JobTitle')
+        job_link = job_link_tag['href'] if job_link_tag else "N/A"
+
+        
+
+        d["job_title"].append(job_title)
+        d["company_name"].append(company_name)
+        d["location"].append(location)
+        d["job_type"].append(job_type)
+        d["job_description"].append(job_description)
+        d["job_link_tag"].append(job_link)
+'''

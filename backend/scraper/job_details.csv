@@ -1,0 +1,390 @@
+title,link,Job Description,requirements
+"Software Engineer, Platform Engineering (Mercari India)",https://apply.workable.com/mercari-india/j/8400CC9BF0/,"Description
+
+
+
+About Us
+Mercari is a Japan-based C2C marketplace company founded in 2013 with the mission to “Create value in a global marketplace where anyone can buy & sell.” From being the first tech unicorn from Japan before its IPO in 2018 we have come a long way towards becoming a global player and continuously and diligently work towards our transformation journey with a strong focus on our mission. 
+Since its inception, Mercari Group has worked to grow its services, investing in both our people and technology. Over time Mercari has expanded from being the top player in the C2C marketplace in Japan to new geographies like the U.S. We have also successfully launched new businesses such as Merpay, which is a mobile payment service platform with a vision to create a society where anyone can realize their dreams through a new ecosystem centered not only on payment service but also on credit. Today, Mercari Group is made up of multiple subsidiary businesses including logistics, B2C platform, blockchain, and sports team management.
+For our services to be utilized by people worldwide; however, there is still a mountain of work ahead of us. This endeavor naturally requires the capability of the best talent and minds, and that is exactly the reason for us to launch the India Center of Excellence. With your help, we will continue to take on the world stage and strive to grow into a successful global tech company.
+Our Culture
+To achieve our mission at Mercari, our organization and each of our employees share the same values and perspectives. Our individual guidelines for action are defined by our three values: Go Bold, All for One, and Be a Pro. Our organization is also shaped by our four foundations: Sustainability, Diversity & Inclusion, Trust & Openness, and Well-being for Performance. Regardless of how big Mercari gets, the culture will remain essential to achieving our mission and something we want to preserve throughout our organization. 
+We invite you to read the “Mercari Culture Doc,” which summarizes the behaviors and mindset shared by Mercari and its employees. We continue to build an environment where all of our members of diverse backgrounds are accepted and recognized, and where they can thrive while holding dear to Mercari’s culture.
+Position Overview
+Team
+The Platform Engineering teams are responsible for helping engineers at Mercari and its subsidiaries to build and deliver better products to our customers. We provide infrastructure and DevOps toolchains to increase the reliability, security and observability of the service to make the work of engineers easy.
+Within the platform group, there are multiple sub-teams that deal with specific layers and this position is for the mid-level platform engineer who is comfortable working with any sub-team and adding value to the overall platform.
+You can see more details about the team structure on our tech blog How we reorganize the platform team.
+Recent or ongoing projects
+The following are some of the recent or in-progress projects which the Platform Group has been working on:
+Platform DX
+Kubernetes Configuration Management with CUE
+Shifting to Zero Touch Production
+CI/CD
+Towards a more stable and secure CD system replacement
+Defense Against Novel Threats: Redesigning CI at Mercari
+Network
+Our Network as a Service
+How Istio solved our problems
+Managing Network Policies for namespaces isolation on a multi-tenant Kubernetes cluster
+Dynamic Service Routing using Istio
+Platform Infra
+Securing Terraform monorepo CI
+Observability-kit: Adventures of using CUE at scale
+Role
+We are looking for a software engineer who has a strong computer science background and proven experience in developing platform or infrastructure systems. The ideal candidate should have a keen interest in distributed systems and cloud-based components, and be genuinely enthusiastic about improving developer productivity while ensuring the reliability, security, and observability of Mercari services. It is also important to have the ability to release, migrate, and operate platform features in large-scale systems.
+Work Responsibilities
+What you will do
+Design, develop, and maintain platform features and toolings that support the entire software development cycle from build, test to deployment and operation
+Support migration and adoption of new platform features and toolings
+Improve platform stability, scalability, availability and security with the SRE and Security teams
+Improve observability of services and the platform itself to reduce the incidents and control the overall cost
+Improve and automate daily platform operations and reduce toils
+Be an advocate of engineering best practices and communicate with internal developers to understand their needs
+You may be fit if you
+Are passionate about improving developer productivity and experience
+Are passionate about building, operating and maintaining scalable infrastructures with operations automation
+Are neutral on the technology itself and can take pragmatic approaches to the issues
+Avoid reinventing the wheel and utilize the existing tooling and ecosystem as much as possible
+Have good communication and interpersonal skills 
+Bold Challenges
+Since the platform and its toolings are used not only by the Japan marketplace but also by Japan fintech and Mercari US marketplace, the changes and improvements can affect the whole organization’s performance from development agility to system reliability. As a software engineer of the team, your implementation can have a truly significant impact.
+The team needs to understand what the developers are struggling with and what is required for the Mercari Group’s product development. With this empathy and collection of requirements, the team prioritizes the problems to solve and decides the solution for them. You can join this decision-making process and propose a pragmatic solution leveraging your knowledge and experience.","Requirements
+Minimum Requirements
+Minimum 3 years of experience in developing, operating, and maintaining complex and scalable production systems, including cloud-based platforms.
+Strong computer science background with in-depth knowledge of major cloud computing platforms such as AWS, Azure, or GCP.
+Excellent written communication skills for documenting designs and collaborating with stakeholders.
+Proficiency in container management platforms like Kubernetes or Docker for production environments.
+Familiarity with network proxies like Envoy, HAProxy, or Nginx.
+Strong understanding of networking, especially OSI Layer 4 to 7: load balancers, proxies, API gateways, DNS, TLS, and HTTP protocol
+Hands-on experience in building tools/automation using scripting languages such as Bash, Go, or Python.
+Strong experience in implementing and managing infrastructure as code (IaC) solutions like Terraform.
+Ability to work collaboratively in a team and adapt to a dynamic environment.
+Preferred Requirements
+Experience in working with distributed systems or microservices architecture.
+Understanding of service level agreements (SLAs) and objectives for maintaining system performance and reliability.
+Familiarity with monitoring and observability technologies such as Datadog, Prometheus, Graphite, Grafana, Kibana, Elasticsearch.
+Previous experience in open-source software development or active participation in open-source communities.
+Experience in using service meshes in production, such as Istio, Kong or Linkerd.
+Media
+Owned Media
+Mercari Engineering Portal
+Mercan - Introduces the people that make Mercari
+Mercari US Blog
+Related Articles
+Development Platforms and Platformers: On Rising to the Global Standard Ken Wakasa, Mercari CTO | Mercan
+Developer Experience at Mercari
+Introducing Platform Infra Team at Mercari
+Introduction of the Network team
+Introducing Platform Infra Team at Mercari
+Blogs related to Infrastructure"
+"Software Engineer (Frontend, Backend, or Full stack)",https://apply.workable.com/subscript/j/E58599B066/,"Description
+The basics
+The stack: Postgres + Clickhouse, Node.js/Express.js, React. Currently running on Heroku, eventually AWS
+The product: We're building the ultimate suite for Finance teams to manage everything from billing to revenue recognition to subscription metrics, and much more
+The way we work:
+This is a remote job - work anywhere you want, and in any timezone on earth (or outside earth, whatever).
+We are an asynchronous team - we don't do scheduled meetings, and rely on each team member to pick their own schedule and to communicate clearly in writing and with recorded videos. Hear from our co-founder Michelle Lee on what it's like to work asynchronously.
+We operate completely autonomously - no one will tell you what to do, we'll just tell you the goals and you will figure out how to work towards them with the rest of the team.
+The role you'll play on our team:
+You'd be one of the first ten engineers on the team.
+You'll work on
+Backend: database design and implementation, complex data management problems, API design and implementation, writing tests
+Frontend: building features in our react app, HTML/CSS + styled components, building amazing user experiences, writing tests
+Frontend and backend: building and iterating on our product, collaborating with designers and founders, and making a product that users will love.
+Like all start-ups we're scrappy, but not scrappy on compensation: Subscript is committed to paying our awesome team members at market-rate, including benefits.
+Our interview process
+Our interview process is designed to focus on your skills as a software engineer, and your ability to communicate clearly. We're a fully asynchronous company, so that's how we will communicate in this interview process too 🙂.
+We'll ask you to work on a small code challenge
+After reviewing the short code challenge, we'll ask you to work on a ~90 minute exercise while recording a loom (or other screen recording) video.
+If the video interview above goes well, we'll want to learn a bit more about how you communicate in writing - we will ask you to put together a technical design document. This is one of the biggest ways we communicate at Subscript, so we want to see that you can work well with that!
+And finally, hopefully we'll send you an offer. And hopefully you'll accept!","Requirements
+You're an excellent engineer (you write high quality code, you write great tests, you ship quickly)
+You're a great communicator via writing, and via recorded videos.
+You're excited about working on a globally-distributed and diverse team, in an incredibly unique culture where autonomy, accountability, and ownership are equally as valued as your skillset.
+That's it!"
+Senior Software Engineer (Hybrid or On-site) - more.com,https://apply.workable.com/more-com/j/081FFF5AE2,"Description
+More.com offers a pan-european ticketing marketplace with 12 years of experience, thousands of clients, and millions of tickets issued annually. In 2021, more.com started expanding its ticketing services in Europe and is currently present in 6 countries.
+At more.com, our mission is to offer the most advanced ticketing platform with unprecedented agility and cutting-edge technology while providing an amazing experience both to our customers and our event producers.
+The Team
+We are looking for a Senior Software Engineer with great enthusiasm for the event ticketing industry to join our team in Marousi, Athens. The Engineering team’s purpose is to keep more.com’ backbone systems and applications healthy and secure, implement and deploy new features providing competitive advantages to the platform and offer a unique experience to our users.
+Engineers design and implement new features in a fast-paced environment. They also find solutions to streamline highly scalable and critical applications, affecting millions of users.
+The Role
+Software engineers in more.com are responsible for a multitude of projects and are expected to be able to work independently, assist their teammates and mentor junior developers. You will also be expected to collaborate across multiple workstreams and roles like architects, program management leads and engineering leads across the technology team.
+Responsibilities:
+Perform tasks in an efficient & timely manner.
+Design, build, test, and maintain efficient, reusable, and reliable code.
+Be a team player. Offer your help, listen and seek to understand. Step up & take initiatives.
+Research innovative technologies to find new and efficient ways to solve day-to-day challenges. Continually advance technical knowledge and skills.
+Ensure high-quality software by following software design principles.
+Tech stack
+Our libraries and applications are written in C# & .NET Framework / .NET Core. MS SQL Server, Azure Storage, Service Fabric, Service Bus and several other platforms and services are also part of the architecture. We use GitHub for code versioning, and the Atlassian stack for tickets and documentation.","Requirements
+Degree in Computer Science, Computer Engineering or other relevant field.
+At least 4 years of experience developing production-level software using C# .NET (full framework or .NET Core) and SQL.
+Good understanding of basic web technologies such as HTTP, REST, etc.
+Practical understanding of algorithms, design patterns and Object-Oriented Programming.
+Passionate about delivering high-quality code.
+Fluent in English, both oral and written."
+"Software Engineer, Backend - Mercari, Inc. (India)",https://apply.workable.com/mercari-india/j/1C9B45B4E9/,"Description
+
+Introduction
+
+About Us
+Mercari is a Japan-based C2C marketplace company founded in 2013 with the mission to “Create value in a global marketplace where anyone can buy & sell.” From being the first tech unicorn from Japan before its IPO in 2018 we have come a long way towards becoming a global player and continuously and diligently work towards our transformation journey with a strong focus on our mission.
+Since its inception, Mercari Group has worked to grow its services, investing in both our people and technology. Over time Mercari has expanded from being the top player in the C2C marketplace in Japan to new geographies like the U.S. We have also successfully launched new businesses such as Merpay, which is a mobile payment service platform with a vision to create a society where anyone can realize their dreams through a new ecosystem centered not only on payment service but also on credit. Today, Mercari Group is made up of multiple subsidiary businesses including logistics, B2C platform, blockchain, and sports team management.
+For our services to be utilized by people worldwide; however, there is still a mountain of work ahead of us. This endeavor naturally requires the capability of the best talent and minds, and that is exactly the reason for us to launch the India Center of Excellence. With your help, we will continue to take on the world stage and strive to grow into a successful global tech company.
+
+Our Culture
+To achieve our mission at Mercari, our organization and each of our employees share the same values and perspectives. Our individual guidelines for action are defined by our three values: Go Bold, All for One, and Be a Pro. Our organization is also shaped by our four foundations: Sustainability, Diversity & Inclusion, Trust & Openness, and Well-being for Performance. Regardless of how big Mercari gets, the culture will remain essential to achieving our mission and something we want to preserve throughout our organization. We invite you to read the “Mercari Culture Doc,” which summarizes the behaviors and mindset shared by Mercari and its employees. We continue to build an environment where all of our members of diverse backgrounds are accepted and recognized, and where they can thrive while holding dear to Mercari’s culture.
+Work Responsibilities
+Design, development, and operation of APIs using Go, Java or PHP
+Improving services and measuring effectiveness using quantitative and qualitative analysis on user behavior logs, etc.
+Design architecture and select middleware based on application requirements
+Microservice performance tuning, monitoring, and alert handling
+Working with PMs on a series of development tasks (plan, design, implementation, QA, release, etc.)
+Investigating inquiries from customer support or other development teams
+Conducting system operation tasks, including responding to alerts while on call
+Engineering Culture
+Technology Stack
+Bold Challenges
+We are looking for people that are interested in our services, mission, and values, and want to work where engineers can go bold, use the latest technology, make autonomous decisions, and take on challenges at a rapid pace.
+
+Minimum Requirements
+4-7 years of experience in backend design, development, and operation of APIs using Go, PHP, or Java
+Experience developing and operating systems for large-scale products, selecting technologies, and improving their codebase
+Experience in designing and developing databases (MySQL or similar RDBMS)
+Ability to design and develop products while considering performance and scalability
+Experience selecting middleware and designing software architecture
+Ability to take ownership and lead the software development process
+Good communication skills to collaborate with stakeholders and teammates on product development
+
+Preferred Requirements
+Project management and/or team leadership
+Experience developing and operating systems using microservice architecture
+Cloud development experience (preferably GCP or AWS)
+Knowledge of and experience with databases (RDBMS/NoSQL), networks, Linux, monitoring systems, logging, and SLO/SLA
+Experience contributing to an open-source project
+
+Employment Status
+Full-time
+Office
+Bangalore
+Hybrid workstyle
+We believe in high performance and professionalism. We work from office for 2 days/week and work from home 3 days/week
+To build a strong & highly-engaged organization in India, we highly encourage everyone to work from our Bangalore office, especially during the initial office setup phase
+We will continue to review and update the policy to address future organizational needs
+Work Hours
+Full flextime (no core time)
+*Flexible to choose working hours other than team common meetings
+
+Media
+
+Owned Media
+Mercari Engineering Portal
+Mercan - Introduces the people that make Mercari
+Mercari US Blog
+
+Related Articles
+Development Platforms and Platformers: On Rising to the Global Standard Ken Wakasa, Mercari CTO | mercan
+“I'm Not a Talented Engineer” Insists the Member-Turned-Manager Revamping Our Internal CS Tool | mercan
+Personalize to globalize:How Mercari is reshaping their app, their company, and the world | mercan
+The Providers of the Safe and Secure Mercari Experience: The TnS Team, Introduced by Its Members! | mercan","Requirements
+Degree in Computer Science, Computer Engineering or other relevant field.
+At least 4 years of experience developing production-level software using C# .NET (full framework or .NET Core) and SQL.
+Good understanding of basic web technologies such as HTTP, REST, etc.
+Practical understanding of algorithms, design patterns and Object-Oriented Programming.
+Passionate about delivering high-quality code.
+Fluent in English, both oral and written."
+Software Engineer - Passage,https://apply.workable.com/passagehq/j/CE67B522C8,"Description
+Our mission is to provide access to life-changing educational and career opportunities. Passage's platform empowers immigrants and international students by matching their talents with the most crucial workforce needs in their destination countries. We then work to provide financial solutions and connect them to the logistical support they need, facilitating their transformational journeys to study or work abroad.
+The team that we have assembled thus far is very impressive (including IOI medalists, previous co-founders and C suites of successful startups.) Since we want to build a very lean team, we are looking for super talented and mission driven Senior Software Engineers to join our team. We code in Python, Django, TypeScript, React, and React Native, and are open to adopting new technologies when needed.
+We are currently in search of full-stack engineers, and we recognize that software engineers often have their strengths either in frontend or backend development. If your expertise leans towards frontend development, we highly value your eye for design and the ability to craft engaging user experiences. On the other hand, if your expertise is primarily in backend development, we expect your proficiency in architecting complex services and databases. In both cases, we place a strong emphasis on your ability to contribute to informed product decisions.
+It's important to note that we maintain an in-office working policy, and we require candidates to either reside in Toronto or be open to relocating to the area and committing to a five-day-a-week in-office schedule.
+Responsibilities
+Design, develop, and maintain complex software applications.
+Lead the technical design and architecture of software systems.
+Collaborate with cross-functional teams to develop new features and products.
+Write clean, maintainable code in accordance with best practices.
+Participate in code reviews and provide feedback to improve overall code quality.
+Requirements
+2+ years of experience as a software engineer.
+Proficient in Python, Django, TypeScript, React, and React Native.
+Deep knowledge of software design patterns and architecture.
+Strong understanding of database design and development.
+Excellent communication and problem-solving skills.
+Experience with cloud platforms such as AWS is a plus.","Requirements
+Degree in Computer Science, Computer Engineering or other relevant field.
+At least 4 years of experience developing production-level software using C# .NET (full framework or .NET Core) and SQL.
+Good understanding of basic web technologies such as HTTP, REST, etc.
+Practical understanding of algorithms, design patterns and Object-Oriented Programming.
+Passionate about delivering high-quality code.
+Fluent in English, both oral and written."
+Software engineer - WATI.io,https://apply.workable.com/wati-dot-i-o/j/BB9A5AE0FD/,"Description
+WATI is an early stage, fast growing SaaS platform that is revolutionizing how companies communicate with their customers. Through our cutting-edge customer engagement software built on WhatsApp’s Business API, businesses are now able to have personalised conversations, be easily accessible and engage with their customers in-real time - at scale! We live in the on-demand economy, where customers expect fast, simple and easy service and that’s exactly what our platform empowers companies to do.
+
+This is made possible through WATI’s easy-to-use platform that can be made up and running in no time. As a result, small and medium businesses have embraced the platform rapidly, and thousands of customers across 54 countries are now using WATI within just a year of launch.
+
+We are growing fast, and we are now looking for a Software Engineer. Working closely with the Software Development and Product teams, you will be responsible for expanding product offerings and deploying new features using best-in-class technology. In addition, a key component of this role will be to help drive the development team deliver quality software within schedule.
+
+Work in a team of 5-7 software engineers (remote) in the GMT+8 timezone
+Work with other technical engineers to drive conversations around technical issues and engineering best practices, suggesting improvements and ideas as you see them
+Engage with code review: provide thoughtful, constructive feedback for your team while also using it as a learning opportunity for yourself
+Technical analysis and estimation of business requirements
+Prioritize, thin slice and schedule the tasks for the team to work on during the sprint
+Collaborate with Product Managers, Designers, and QA Engineers to define issues with thorough acceptance criteria prior to engineering beginning","Requirements
+Bachelor or Master in Computer Science / Computer Technology
+Strong analytical and problem-solving skills
+Strong foundation in data structures and algorithms
+Product development experience
+Experience and knowledge in NoSQL Databases e.g. Mongo
+Experience in SOA (Service Oriented Architecture) applications
+Hands-on experience in cloud computing like Google Cloud or AWS
+Knowledge of Data Streaming concepts and distributed caching technologies
+Ability to work under pressure and in the face of conflicting demands
+Experienced using Project Management tools eg. YouTrack, Jira, Trello etc
+Nice to have: Experience with c# and react.js"
+Software Engineer - Python - (PST) - Channel Factory,https://apply.workable.com/channel-factory/j/412E4E0BB2/,"Description
+Channel Factory is the leader in Social Video Marketing addressing brand safety and suitability. Our Product team is in search of an innovative and dedicated Software Engineer with Fullstack Python / Django & ElasticSearch experience to join our growing team. We are seeking an eager, passionate, and highly skilled individual to bring our product to life. The Engineer pays relentless attention to detail and will work with the different teams to communicate our ideas, shape our brand, and increase customer demand. They will be expected to work on a variety of projects and should have a great deal of experience with the software engineering life cycle and large data. An emphasis will be placed on ensuring that the latest technologies, techniques, functionality, trends, and usability best practices are used.
+Responsibilities:
+Attend Product planning sessions and contribute ideas to the platform.
+Interface with local and remote engineers to add features and fix potential issues.
+Create documentation of code & Environments.
+Participate in code reviews.
+Create solid, clean code.
+Research and learn the latest technologies related to the implementation of ChannelFactory products.","Requirements
+Strong communication skills.
+3+ years experience in software development.
+A minimum of 3 years of experience and In-depth knowledge of Python, and Django.
+Hands-on experience with ElasticSearch (a plus!), SQL databases (Postgres/RDS, MySql), and Redis.
+Knowledge of ReactJS and Javascript
+Expertise in github / bitbucket.
+Expertise in creating and maintaining restful API services (3+ years).
+Understanding of new trends within the digital space.
+Solid expertise and experience in the social media space, and YouTube ecosystem.
+Ability to generate unit tests.
+Exceptional multitasking and time management skills.
+Ability to express creative ideas and solutions
+Passion for learning new software, techniques, and skills.
+Stellar interpersonal, communication, and collaboration skills.
+Self-starter with high energy who thrives in a fast-paced environment Knowledge of digital advertising is a plus.
+In-depth Understanding of hosted cloud services in AWS.
+In-depth expertise in the engineering life cycle.
+Ability to work in diverse teams with both present and off-site peers
+Ability to travel at least 15% of the year for onsite meetings"
+Software Engineer - Freelancer.com,https://apply.workable.com/freelancer/j/9639EE1B11/,"Description
+We are growing our engineering team and on the lookout for new engineers to take our company to the next level.
+This won't be your typical cog-in-the-machine type of job. If you're a high achiever with talent, looking for something more than a boring job in corporate, want to work with the best and brightest and don't need to be handheld, this is the job for you.
+If you join a mega-cap technology company as the 10,000th hire you might struggle to figure out the impact you are making. If you join a startup, you might get to work on the latest fad, but likely have few mentors to learn from, work on toy problems and never change the world.
+At Freelancer you’ll get to work on a highly diverse, global set of internet-scale challenges where you will make a meaningful difference with real responsibility, while rapidly building your skills. We run a meritocracy - we actively promote from within.
+You’ll also change lives - our mission is to provide one billion jobs. Not many companies actually make a difference like Freelancer does in providing opportunity and income to people all around the world.
+We have a very wide range of engineering challenges to sink your teeth into. You’ll get a chance to be exposed to a wide variety of technologies across our businesses. Freelancer.com is an Alexa top 1000 website with a cutting-edge frontend stack incorporating Angular, TypeScript and RxJS. Our backend powers a large suite of services running a modern global marketplace; messaging, payments, translations, file services and a notification system sending millions of notifications an hour. We deploy code to production multiple times a day.
+
+Must haves:
+Tertiary Degree in Computer Science / Engineering (or related)
+Proficiency in a few web development languages, such as Python, Golang, PHP, Node.js or Ruby
+Experience with relational databases and SQL, preferably MySQL
+Background or interest in web engineering at scale
+Experience working in an agile team environment, continuously shipping environment
+Linux experience
+Cloud computing experience, preferably AWS
+Strong writing and verbal communication skills
+Strong sense of ownership and able to self-manage work
+Self-motivated and tracked-record of learning new technologies
+Strong troubleshooting skills and creative problem-solving ability
+
+Nice-to-haves:
+Experience with SOA, microservice and containerisation architecture
+Experience with development of public facing APIs
+Experience with modern Javascript framework, such as Angular, React or Vue
+Experience with TypeScript
+Strong knowledge of computer networking
+Sound understanding of OWASP and the best web security practices
+Strong academic achievements
+MS or PhD degrees
+A Github page with contributions to open source software
+
+Benefits:
+A meritocratic culture with the ability to take ownership and fast track your career growth.
+You will be working on an Alexa top ranked website, solving complex, internet scale and global problems in product & engineering with over 65 million customers across 247 countries, regions & territories.
+Fully stocked kitchen and beer taps, complemented by a bar with a breathtaking view
+Delicious Friday lunches from a rotating selection of local restaurants.
+Engaging Weekly Town Halls with global presentations and open Q&A sessions with our CEO (feel free to ask him anything!).
+Hack-a-thons - Get hacking and programming in this quarterly company-wide where teams create solutions to existing problems and win prizes. The 2-day event is filled with games, events, shows, food and more.
+Regular team building events (think speed boats in the harbour, escape rooms, karaoke, laser tag, trivia nights, poker nights in the office)!
+Located at Grosvenor Place - Home of Freelancer HQ, this iconic building and location with harbour views with weekly and complimentary classes, activities, events, promotions, competitions and deals.
+Just when you thought it couldn’t get any better:
+Change lives every day – Everything we do as part of our jobs contribute to improving the lives of our users on a global scale. Our mission is to provide one billion jobs. Not many companies actually make a difference like Freelancer does in providing opportunity and income to people all around the world.
+Fast-track your career - We boast a meritocratic culture, renowned for hiring into senior roles from within and producing many business and product leaders in the technology industry.","Requirements
+Strong communication skills.
+3+ years experience in software development.
+A minimum of 3 years of experience and In-depth knowledge of Python, and Django.
+Hands-on experience with ElasticSearch (a plus!), SQL databases (Postgres/RDS, MySql), and Redis.
+Knowledge of ReactJS and Javascript
+Expertise in github / bitbucket.
+Expertise in creating and maintaining restful API services (3+ years).
+Understanding of new trends within the digital space.
+Solid expertise and experience in the social media space, and YouTube ecosystem.
+Ability to generate unit tests.
+Exceptional multitasking and time management skills.
+Ability to express creative ideas and solutions
+Passion for learning new software, techniques, and skills.
+Stellar interpersonal, communication, and collaboration skills.
+Self-starter with high energy who thrives in a fast-paced environment Knowledge of digital advertising is a plus.
+In-depth Understanding of hosted cloud services in AWS.
+In-depth expertise in the engineering life cycle.
+Ability to work in diverse teams with both present and off-site peers
+Ability to travel at least 15% of the year for onsite meetings"
+Software Engineer - Agility,https://apply.workable.com/agility/j/D408E6B2C7/,"Description
+Grow your career with us! Join our team of Software professionals! We are in search of a Software Engineer.
+PWC Technology for Computers (PWCT) is a company wholly owned by Agility. PWCT provides e-Government solutions designed to facilitate trade, and improve customs and tax revenues. We offer governments a platform for multi-agency collaboration that facilitates paperless cross-border trade, offers speedier customs processing, and emphasizes transparency and visibility.
+We have executed various types of IT modernization implementation and integration projects for customs administrations in countries such as Kuwait, Malaysia, Egypt, Pakistan, and Ghana. We are one of Agility’s enterprise solutions developers that consistently deliver highly successful IT projects.
+The Role in brief:
+Responsible for developing software programs or systems that align with user needs. Your duties include creating reports, meeting with clients or business professionals to strategize ideas for beneficial software, coordinating with other IT professionals to design software and running tests to catch coding errors.
+Your Responsibilities
+Develops information systems by designing, developing, and installing software solutions
+Determines operational feasibility by evaluating analysis, problem definition, requirements, solution development, and proposed solutions
+Develops software solutions by studying information needs, conferring with users, and studying systems flow, data usage, and work processes
+Investigates problem areas and follows the software development lifecycle & perform unit testing
+Documents and demonstrates solutions by developing documentation, flowcharts, layouts, diagrams, charts, code comments and clear code
+Prepares and installs solutions by determining and designing system specifications, standards, and programming
+Improves operations by conducting systems analysis and recommending changes in policies and procedures.
+Obtains and licenses software by obtaining required information from vendors, recommending purchases, and testing and approving products
+Provides information by collecting, analyzing, and summarizing development and service issues
+Accomplishes engineering and organization mission by completing related results as needed
+Troubleshooting and bug fixing based on the QA feedback","Requirements
+Your Qualifications
+Bachelors in Computer Science or Computer Engineering
+Minimum 4 to 6 Years of experience in a similar environment
+Familiar with Microsoft .Net Related Technologies (ASP.Net 2.0/above, VS 2005/above, C#.Net, Windows Client)
+Good experience with DB Skills in SQL 2016 (Should be able to write Stored procedures, Function, Triggers)
+Experience in JQuery, JavaScript, XML, Windows Application Development, and Web Development
+Knowledge in Ajax, Share Point is an added advantage
+Angular, .NET Core and Entity Framework, Practiced AGILE/SCRUM, DevOps
+Your Proficiencies
+Able to work in a fast pace deadline driven environment
+Ownership on deliverables
+Should have good analytical and problem solving skills
+High level communication skills"
+Software Engineer - Insignis Cash,https://apply.workable.com/insignis-cash-solutions/j/14665E45F2/,"Description
+We are a fast-growing, FinTech company looking for a talented and enthusiastic individual to join our team. We are expanding, making this a perfect position if you would like to have a significant impact on our company’s growth and develop your role and career as the business evolves. You will join a team where your ideas will be welcomed and valued.
+The Engineer will be responsible for developing and enhancing our core platform by contributing to the delivery of new projects and improvements to our current software.
+The role involves all aspects of the development lifecycle from design, implementation, databases and DevOps. You need to be flexible and innovative and be able to handle challenges.
+Role Responsibilities
+  As an Engineer, you will be responsible for enhancing the core Cash Management platform, using your extensive experience in .Net development
+You will work with all stakeholders to analyse requirements to develop solutions
+Help design, develop and maintain business-critical systems which are used 24/7/365 days a year
+Implement continuous integration and delivery to limit manual testing and troubleshooting
+Ensure the DevOps concepts are used to deliver resilient, scalable and secure software
+To produce accurate technical and non-technical documentation","Requirements
+Strong knowledge of C#, including object-oriented programming and SOLID design principles
+MS SQL, T-SQL
+Some experience with Azure Cloud Services and designing and developing continuous integration build, test and deployment environments using modern cloud-based tools and techniques
+Experience working in Agile or Scrum teams, with an understanding of sprint planning, story points, and iterative development
+Ability to take a pragmatic approach to coding and system design. Be able to choose solutions that balance quality and simplicity over perfectionism
+ The ideal candidate will be able to integrate quickly and work well within a team.
+Must be confident, self-motivated and display a high degree of focus.
+Be used to working in a challenging and demanding environment where priorities can change at short notice
+Exhibit an ability to work using own initiative and whilst under pressure
+Possess very good verbal and written communication skills
+Be able to demonstrate a logical and analytical approach to problem-solving
+Have excellent research/analysis skills"
