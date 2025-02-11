@@ -26,9 +26,15 @@ function CategoryCarousel() {
 
 
   const handleCategoryClick = async (category) => {
-    setActiveCategory(category);
+    const newCategory = activeCategory === category ? "" : category; // Toggle active category
+    setActiveCategory(newCategory);
+
     try {
-      const response = await fetch(`${import.meta.env.VITE_JOB_API_END_POINT}/get?keyword=${category}`);
+      const endpoint = newCategory
+        ? `${import.meta.env.VITE_JOB_API_END_POINT}/get?keyword=${newCategory}`
+        : `${import.meta.env.VITE_JOB_API_END_POINT}/get`; // Fetch all jobs if no category is selected
+
+      const response = await fetch(endpoint);
       const data = await response.json();
       if (data.success) {
         dispatch(setAllJobs(data.jobs));
@@ -47,11 +53,10 @@ function CategoryCarousel() {
             <CarouselItem key={index} className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 px-2">
               <Button
                 variant={activeCategory === cat ? "default" : "outline"}
-                className={`w-full whitespace-nowrap rounded-full px-6 py-2 text-sm font-semibold transition-all duration-300 ${
-                  activeCategory === cat
+                className={`w-full whitespace-nowrap rounded-full px-6 py-2 text-sm font-semibold transition-all duration-300 ${activeCategory === cat
                     ? "bg-[#6A38C2] text-white"
                     : "hover:bg-[#6A38C2] hover:text-white"
-                }`}
+                  }`}
                 onClick={() => handleCategoryClick(cat)}
               >
                 {cat}

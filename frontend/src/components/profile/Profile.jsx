@@ -23,7 +23,7 @@ function Profile() {
                     <div className="flex items-center gap-4">
                         <Avatar>
                             <AvatarImage src={user?.profile?.profilePhoto} />
-                            <AvatarFallback>CN</AvatarFallback>
+                            <AvatarFallback>{user?.fullname.charAt(0)}</AvatarFallback>
                         </Avatar>
                         <div>
                             <h1 className="font-bold text-lg">{user?.fullname}</h1>

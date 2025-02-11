@@ -103,7 +103,7 @@ function Navbar() {
               <PopoverTrigger>
                 <Avatar>
                   <AvatarImage src={user?.profile?.profilePhoto} />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarFallback>{user?.fullname.charAt(0)}</AvatarFallback>
                 </Avatar>
               </PopoverTrigger>
               <PopoverContent>
@@ -111,7 +111,7 @@ function Navbar() {
                   <div>
                     <Avatar>
                       <AvatarImage src={user?.profile?.profilePhoto} />
-                      <AvatarFallback>CN</AvatarFallback>
+                      <AvatarFallback>{user?.fullname.charAt(0)}</AvatarFallback>
                     </Avatar>
                   </div>
                   <div>
@@ -209,7 +209,7 @@ function Navbar() {
               <div className="flex gap-2 items-center">
                 <Avatar>
                   <AvatarImage src={user?.profile?.profilePhoto} />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarFallback>{user?.fullname.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div>
                   <h4 className="font-medium">{user.fullname}</h4>

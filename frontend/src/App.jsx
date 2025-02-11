@@ -18,6 +18,7 @@ import CompanySetup from './components/recruiter/CompanySetup'
 import RecruiterJobs from './components/jobs/RecruiterJobs'
 import CreateJob from './components/jobs/CreateJob'
 import JobApplicants from './components/recruiter/JobApplicants'
+import ProtectedRoute from './components/auth/ProtectedRoute'
 
 
 function App() {
@@ -25,13 +26,13 @@ function App() {
   useGetAllJobs();
   useEffect(() => {
     dispatch(fetchUser());
-    
+
   }, [dispatch]);
 
 
   const Layout = () => (
     <div className="min-h-screen flex flex-col">
-    
+
       <Navbar /> {/* Fixed Navbar */}
 
       <main className="mt-16"> {/* Adjust the top margin dynamically */}
@@ -43,10 +44,10 @@ function App() {
 
   const MinimalLayout = () => (
     <>
-    <Navbar />
-    <main className="mt-16">
-      <Outlet />
-    </main>
+      <Navbar />
+      <main className="mt-16">
+        <Outlet />
+      </main>
     </>
   );
 
@@ -60,11 +61,11 @@ function App() {
         },
         {
           path: '/login',
-          element: <Login />
+          element: <ProtectedRoute allowedRoles={[]}> <Login /> </ProtectedRoute>
         },
         {
           path: '/signup',
-          element: <Signup />
+          element: <ProtectedRoute allowedRoles={[]}> <Signup />  </ProtectedRoute>
         },
         {
           path: '/jobs',
@@ -72,37 +73,22 @@ function App() {
         },
         {
           path: '/profile',
-          element: <Profile />
+          element: <ProtectedRoute> <Profile /> </ProtectedRoute>
         },
-        /*recruiter Pages */
+
+        // Recruiter Protected Routes
         {
-          path: '/recruiter/companies',
-          element: <Companies />
+          element: <ProtectedRoute allowedRoles={["recruiter"]} />, // Only recruiters
+          children: [
+            { path: "/recruiter/companies", element: <Companies /> },
+            { path: "/recruiter/createcompany", element: <CreateCompany /> },
+            { path: "/recruiter/company/:id", element: <CompanySetup /> },
+            { path: "/recruiter/jobs", element: <RecruiterJobs /> },
+            { path: "/recruiter/createjob", element: <CreateJob /> },
+            { path: "/recruiter/job/:id", element: <CreateJob /> },
+            { path: "/recruiter/:jobId/applicants", element: <JobApplicants /> },
+          ],
         },
-        {
-          path: '/recruiter/createcompany',
-          element: <CreateCompany/>
-        },
-        {
-          path: '/recruiter/company/:id',
-          element: <CompanySetup/>
-        },
-        {
-          path: '/recruiter/jobs',
-          element: <RecruiterJobs/>
-        },
-        {
-          path: '/recruiter/createjob',
-          element: <CreateJob/>
-        },
-        {
-          path: 'recruiter/job/:id',
-          element: <CreateJob/>
-        },
-        {
-          path: 'recruiter/:jobId/applicants',
-          element: <JobApplicants/>
-        }
       ]
     },
     {

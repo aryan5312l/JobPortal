@@ -96,9 +96,9 @@ function FilterJobs({ isOpen, toggleFilter }) {
                     .map((industry, idx) => (
                         <div key={idx} className="my-2 flex items-center">
                             <Checkbox
-    checked={selectedFilters.industry.includes(industry)}
-    onCheckedChange={() => handleCheckboxChange('industry', industry)}
-/>
+                                checked={selectedFilters.industry.includes(industry)}
+                                onCheckedChange={() => handleCheckboxChange('industry', industry)}
+                            />
                             <label className="text-sm font-medium leading-none px-2 text-gray-500">{industry}</label>
                         </div>
                     ))}
@@ -112,9 +112,9 @@ function FilterJobs({ isOpen, toggleFilter }) {
                     .map((range, idx) => (
                         <div key={idx} className="my-2 flex items-center">
                             <Checkbox
-    checked={selectedFilters.salary.includes(range)}
-    onCheckedChange={() => handleCheckboxChange('salary', range)}
-/>
+                                checked={selectedFilters.salary.includes(range)}
+                                onCheckedChange={() => handleCheckboxChange('salary', range)}
+                            />
                             <label className="text-sm font-medium leading-none px-2 text-gray-500">{range}</label>
                         </div>
                     ))}
