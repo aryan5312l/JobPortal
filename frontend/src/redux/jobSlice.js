@@ -26,9 +26,30 @@ const jobSlice = createSlice({
                 job.jobType.toLowerCase().includes(keyword) ||
                 job.company.name.toLowerCase().includes(keyword)
             );
+        },
+        setFilteredJobs: (state, action) => { 
+            const { location, industry, salary } = action.payload;
+
+            const salaryRanges = {
+                "3-6 LPA": [3, 6],
+                "6-10 LPA": [6, 10],
+                "10-15 LPA": [10, 15],
+                "15+ LPA": [15, Infinity]
+            };
+
+            state.filteredJobs = state.allJobs.filter(job => {
+                const locationMatch = location.length === 0 || location.includes(job.location);
+                const industryMatch = industry.length === 0 || industry.includes(job.title);
+                const salaryMatch = salary.length === 0 || salary.some(range => {
+                    const [min, max] = salaryRanges[range];
+                    return job.salary >= min && job.salary <= max;
+                });
+
+                return locationMatch && industryMatch && salaryMatch;
+            });
         }
     }
 });
 
-export const { setAllJobs, updateJobApplications, filterJobs } = jobSlice.actions;
+export const { setAllJobs, updateJobApplications, filterJobs, setFilteredJobs } = jobSlice.actions;
 export default jobSlice.reducer;
