@@ -81,9 +81,7 @@ function Navbar() {
                   <li className="hover:text-[#6A38C2]">
                     <Link to="/jobs">Jobs</Link>
                   </li>
-                  <li className="hover:text-[#6A38C2]">
-                    <Link to="/browse">Browse</Link>
-                  </li>
+                  
                 </>
               )
             }
@@ -181,11 +179,7 @@ function Navbar() {
                       Jobs
                     </Link>
                   </li>
-                  <li className="hover:text-[#6A38C2]">
-                    <Link to="/browse" onClick={() => setMenuOpen(false)}>
-                      Browse
-                    </Link>
-                  </li>
+                  
                 </>
               )
             }
