@@ -22,23 +22,24 @@ function JobsDescription() {
     
     const job = allJobs?.find((job) => job._id === id);
 
-    const checkApplicationStatus = async () => {
-        try {
-            const res = await axios.post(`${import.meta.env.VITE_APPLICATION_API_END_POINT}/checkApplication`, 
-                { jobId: job?._id }, 
-                { withCredentials: true }
-            );
-            //console.log(res);
-            if (res.data.applied  && !hasApplied) {
-                setHasApplied(true);
-            }
-        } catch (error) {
-
-            console.log(error);
-        }
-    };
+    
     
     useEffect(() => {
+        const checkApplicationStatus = async () => {
+            try {
+                const res = await axios.post(`${import.meta.env.VITE_APPLICATION_API_END_POINT}/checkApplication`, 
+                    { jobId: job?._id }, 
+                    { withCredentials: true }
+                );
+                //console.log(res);
+                if (res.data.applied  && !hasApplied) {
+                    setHasApplied(true);
+                }
+            } catch (error) {
+    
+                console.log(error);
+            }
+        };
         if (user && job && !hasApplied) {
             checkApplicationStatus(); // Run only when user or job is available
         }
