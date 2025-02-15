@@ -58,7 +58,8 @@ export const login = async (req, res) => {
             maxAge: 1 * 24 * 60 * 60 * 1000, 
             httpOnly: true, 
             secure: true,  // Required for HTTPS
-            sameSite: "None" // Allow cross-origin cookies
+            sameSite: "None", // Allow cross-origin cookies
+            path: "/",
         }).json({
             message: `Welcome back ${user.fullname}`,
             user,
