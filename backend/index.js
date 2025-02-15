@@ -15,8 +15,11 @@ dotenv.config();
 app.use(express.json())
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
+
+
+const FRONTEND_URL = process.env.FRONTEND_URL.replace(/\/$/, "");
 const corsOptions = {
-    origin: process.env.FRONTEND_URL,
+    origin: FRONTEND_URL,
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"]
 }
@@ -24,9 +27,10 @@ app.use(cors(corsOptions));
 
 const PORT = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
+    res.setHeader("Access-Control-Allow-Origin", FRONTEND_URL); // Fix manually set headers
     res.status(200).send("Hello");
-})
+});
 
 //api's
 app.use("/api/v1/user", userRouter);
