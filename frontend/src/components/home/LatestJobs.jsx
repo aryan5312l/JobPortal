@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 import LatestJobCards from '../jobs/LatestJobCards';
 
 function LatestJobs() {

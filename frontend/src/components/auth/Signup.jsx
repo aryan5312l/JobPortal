@@ -1,7 +1,6 @@
-import Navbar from '../shared/navbar'
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { RadioGroup} from "@/components/ui/radio-group"
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from "axios"

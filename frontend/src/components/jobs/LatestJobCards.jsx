@@ -1,9 +1,9 @@
 
 import { Badge } from "@/components/ui/badge"
 import { useSelector } from 'react-redux';
-import useGetAllJobs from '../../hooks/customHooks/useGetAllJobs';
+
 import { useNavigate } from "react-router-dom";
-import { filterJobs } from "../../redux/jobSlice";
+
 
 //const random = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
 

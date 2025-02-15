@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import FilterJobs from './FilterJobs'
 import LatestJobCards from './LatestJobCards'
 import { FaFilter } from "react-icons/fa";

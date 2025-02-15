@@ -61,7 +61,7 @@ function App() {
         },
         {
           path: '/login',
-          element: <ProtectedRoute allowedRoles={[]}> <Login /> </ProtectedRoute>
+          element: <Login /> 
         },
         {
           path: '/signup',

@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Checkbox } from "@/components/ui/checkbox";
 import { X } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Slider } from '@/components/ui/slider';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setFilteredJobs } from '../../redux/jobSlice';
 
 const filters = {
@@ -20,7 +18,7 @@ const filters = {
 
 function FilterJobs({ isOpen, toggleFilter }) {
     const dispatch = useDispatch();
-    const { allJobs } = useSelector(store => store.job);
+    
 
     const [locationSearch, setLocationSearch] = useState('');
     const [industrySearch, setIndustrySearch] = useState('');
