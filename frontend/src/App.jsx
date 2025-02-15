@@ -65,7 +65,7 @@ function App() {
         },
         {
           path: '/signup',
-          element: <ProtectedRoute allowedRoles={[]}> <Signup />  </ProtectedRoute>
+          element: <Signup /> 
         },
         {
           path: '/jobs',
@@ -73,7 +73,7 @@ function App() {
         },
         {
           path: '/profile',
-          element: <ProtectedRoute> <Profile /> </ProtectedRoute>
+          element: <Profile /> 
         },
 
         // Recruiter Protected Routes
