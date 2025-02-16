@@ -65,6 +65,7 @@ export const login = async (req, res) => {
             user,
             success: true
         });
+        console.log("Set-Cookie header:", res.getHeaders()["set-cookie"]);
 
     }catch(error){
         console.log(error);

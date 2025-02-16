@@ -10,11 +10,15 @@ import applicationRouter from "./routes/applicationRoute.js"
 
 const app = express();
 dotenv.config();
-
+app.use((req, res, next) => {
+    console.log("Before cookie-parser, raw cookie header:", req.headers.cookie);
+    next();
+});
+app.use(cookieParser());
 //Middlewares
 app.use(express.json())
 app.use(express.urlencoded({extended: true}));
-app.use(cookieParser());
+
 
 
 const FRONTEND_URL = process.env.FRONTEND_URL.replace(/\/$/, "");
