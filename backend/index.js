@@ -41,7 +41,8 @@ app.use("/api/v1/company", companyRouter);
 app.use("/api/v1/job", jobRouter);
 app.use("/api/v1/application", applicationRouter);
 
-app.listen(PORT, () => {
-    connectDB();
-    console.log(`Listening on Port ${PORT}`)
-})
+// Connect to Database
+connectDB();
+
+// Export as Vercel serverless function
+export default app;
