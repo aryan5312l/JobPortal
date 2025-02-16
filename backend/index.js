@@ -15,25 +15,30 @@ app.use((req, res, next) => {
     next();
 });
 
+
+
+// ✅ 1️⃣ Fix CORS for Cookies (Allow credentials & headers)
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", process.env.FRONTEND_URL);
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    next();
+});
+
+const corsOptions = {
+    origin: ["https://job-portal-a.vercel.app"], // Allow your frontend domain
+    credentials: true, // Allow cookies & authentication
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allow these HTTP methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow necessary headers
+};
+app.use(cors(corsOptions));
+
 app.use(cookieParser());
 //Middlewares
 app.use(express.json())
 app.use(express.urlencoded({extended: true}));
 
-
-const corsOptions = {
-    origin: process.env.FRONTEND_URL,
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"]
-}
-app.use(cors(corsOptions));
-
-const PORT = process.env.PORT || 3000;
-
-app.get("/", (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", FRONTEND_URL); // Fix manually set headers
-    res.status(200).send("Hello");
-});
 
 //api's
 app.use("/api/v1/user", userRouter);
