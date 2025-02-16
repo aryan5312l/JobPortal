@@ -14,16 +14,15 @@ app.use((req, res, next) => {
     console.log("Before cookie-parser, raw cookie header:", req.headers.cookie);
     next();
 });
+
 app.use(cookieParser());
 //Middlewares
 app.use(express.json())
 app.use(express.urlencoded({extended: true}));
 
 
-
-const FRONTEND_URL = process.env.FRONTEND_URL.replace(/\/$/, "");
 const corsOptions = {
-    origin: FRONTEND_URL,
+    origin: process.env.FRONTEND_URL,
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"]
 }

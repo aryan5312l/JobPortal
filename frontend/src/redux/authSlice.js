@@ -5,12 +5,14 @@ export const fetchUser = createAsyncThunk('auth/validate', async (_, { rejectWit
     try {
         const response = await fetch(`${import.meta.env.VITE_USER_API_END_POINT}/auth/validate`, {
             credentials: 'include',
+            mode: 'cors',
         });
         if (!response.ok) throw new Error('Failed to validate session');
         
         return await response.json();
         
     } catch (error) {
+        console.log("error in fetch user thunk", error);
         return rejectWithValue(error.message);
     }
 });
