@@ -4,8 +4,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 export const fetchUser = createAsyncThunk('auth/validate', async (_, { rejectWithValue }) => {
     try {
         const response = await fetch(`${import.meta.env.VITE_USER_API_END_POINT}/auth/validate`, {
+            method: "GET",
             credentials: 'include',
-            mode: 'cors',
+            
         });
         if (!response.ok) throw new Error('Failed to validate session');
         
