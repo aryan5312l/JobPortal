@@ -16,6 +16,10 @@ app.use((req, res, next) => {
 });
 
 const FRONTEND_URL = process.env.FRONTEND_URL || "https://job-portal-a.vercel.app";
+app.use(cookieParser());
+//Middlewares
+app.use(express.json())
+app.use(express.urlencoded({extended: true}));
 
 // ✅ Fix CORS for Cookies (Allow credentials & headers)
 app.use((req, res, next) => {
