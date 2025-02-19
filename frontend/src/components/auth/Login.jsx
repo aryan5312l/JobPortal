@@ -32,6 +32,8 @@ function Login() {
             e.preventDefault();
             try {
                 dispatch(setLoading(true));
+                console.log(import.meta.env.VITE_USER_API_END_POINT);
+
                 const res = await axios.post(`${import.meta.env.VITE_USER_API_END_POINT}/login`, input, {
                     headers: {
                         "Content-Type": "application/json"
