@@ -17,24 +17,31 @@ app.use((req, res, next) => {
 
 const FRONTEND_URL = process.env.FRONTEND_URL || "https://job-portal-a.vercel.app";
 app.use(cookieParser());
-//Middlewares
-app.use(express.json())
-app.use(express.urlencoded({extended: true}));
 
-const allowedOrigins = [FRONTEND_URL, "https://job-portal-gfznaou6c-aryan-rajs-projects-e6fdfb79.vercel.app"];
 
+// ✅ Global Middleware for CORS Fix
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader("Access-Control-Allow-Origin", origin);
+        res.setHeader("Access-Control-Allow-Credentials", "true");
+        res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    }
+    next();
+});
+
+// ✅ CORS Middleware
 app.use(
     cors({
-        origin: function (origin, callback) {
-            if (!origin || allowedOrigins.includes(origin)) {
-                callback(null, true);
-            } else {
-                callback(new Error("Not allowed by CORS"));
-            }
-        },
+        origin: allowedOrigins,
         credentials: true,
     })
 );
+
+//Middlewares
+app.use(express.json())
+app.use(express.urlencoded({extended: true}));
 
 //api's
 app.use("/api/v1/user", userRouter);

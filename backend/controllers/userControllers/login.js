@@ -60,6 +60,7 @@ export const login = async (req, res) => {
             secure: process.env.NODE_ENV === "production", // Enable secure cookies only in production
             sameSite: "None",
             path: "/",
+            domain: process.env.FRONTEND_URL
         })
             .json({
                 message: `Welcome back ${user.fullname}`,
