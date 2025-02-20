@@ -9,8 +9,15 @@ import jwt from "jsonwebtoken"
 import { User } from "../models/userModel.js";
 import { verifyToken } from "../verifyToken.js";
 import { requestOTP, verifyOTP } from "../controllers/userControllers/otpAuth.js";
+import rateLimit from "express-rate-limit";
 
 const router = express.Router();
+
+const otpLimiter = rateLimit({
+    windowMs: 5 * 60 * 1000, // 5 minutes
+    max: 3, // Limit each IP to 3 OTP requests per window
+    message: { error: "Too many OTP requests. Try again later." }
+});
 
 router.route('/register').post(singleUpload ,register);
 router.route('/login').post(login);
@@ -19,7 +26,7 @@ router.route('/profile/update').post(isAuthenticated, singleUpload, updateProfil
 router.route('/auth/validate').get(verifyToken);
 
 //OTP based login routes
-router.route("/otp-login").post(requestOTP);
+router.route("/otp-login").post(otpLimiter, requestOTP);
 router.route("/verify-otp").post(verifyOTP);
 
 export default router;
