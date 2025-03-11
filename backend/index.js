@@ -8,6 +8,9 @@ import companyRouter from "./routes/companyRoute.js"
 import jobRouter from './routes/jobRoute.js'
 import applicationRouter from "./routes/applicationRoute.js"
 import path from "path";
+import session from "express-session";
+import passport from "passport";
+import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 dotenv.config();
@@ -18,6 +21,13 @@ const __dirname = path.resolve();
 app.use(express.json())
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
+
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use("/api/v1/auth", authRoutes);
+
 const corsOptions = {
     origin: ["https://jobportal-n1sh.onrender.com", "http://localhost:5173"],
     credentials: true

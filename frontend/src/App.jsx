@@ -19,6 +19,7 @@ import RecruiterJobs from './components/jobs/RecruiterJobs'
 import CreateJob from './components/jobs/CreateJob'
 import JobApplicants from './components/recruiter/JobApplicants'
 import ProtectedRoute from './components/auth/ProtectedRoute'
+import GoogleCallback from './components/auth/GoogleCallback'
 
 
 function App() {
@@ -98,6 +99,7 @@ function App() {
           path: '/jobdescription/:id',
           element: <JobsDescription />,
         },
+        {path: "/auth/google/callback", element: <GoogleCallback /> },
       ],
     },
 

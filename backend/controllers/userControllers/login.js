@@ -23,10 +23,18 @@ export const login = async (req, res) => {
         }
 
         //Verifying password
-        const verifyPassword = await bcrypt.compare(password, user.password);
-        if (!verifyPassword) {
+        if(user.password){
+            const verifyPassword = await bcrypt.compare(password, user.password);
+            if (!verifyPassword) {
+                return res.status(401).json({
+                    message: "Wrong Password",
+                    success: false
+                });
+            }
+        }
+        else{
             return res.status(401).json({
-                message: "Wrong Password",
+                message: "Please login with Google",
                 success: false
             });
         }

@@ -29,4 +29,17 @@ router.route('/auth/validate').get(verifyToken);
 router.route("/otp-login").post(otpLimiter, requestOTP);
 router.route("/verify-otp").post(verifyOTP);
 
+router.get("/me", verifyToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select("-password"); // Exclude password
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        res.json({ success: true, user });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+});
+
 export default router;

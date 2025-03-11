@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { RadioGroup } from "@/components/ui/radio-group"
 import { useState } from 'react'
+import { Eye, EyeOff } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useToast } from "@/hooks/use-toast"
@@ -20,6 +20,7 @@ function Login() {
     });
     const [isOtpLogin, setIsOtpLogin] = useState(false);
     const [otpSent, setOtpSent] = useState(false);
+    const [showPassword, setShowPassword] = useState(false); // Track password visibility
 
     const dispatch = useDispatch();
     const { toast } = useToast();
@@ -46,40 +47,31 @@ function Login() {
         e.preventDefault();
         try {
             dispatch(setLoading(true));
-            //console.log(import.meta.env.VITE_USER_API_END_POINT);
 
             const endpoint = isOtpLogin ? "/verify-otp" : "/login";
             const res = await axios.post(`${import.meta.env.VITE_USER_API_END_POINT}${endpoint}`, input, {
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 withCredentials: true
             });
 
-            console.log(`res: ${res}`);
             if (res.data.success) {
                 dispatch(setUser(res.data.user));
-                //console.log(res.data.user)
-                toast({
-                    title: res.data.message,
-                    className: "bg-green-500 text-white font-bold rounded-lg shadow-lg"
-                })
-
+                toast({ title: res.data.message, className: "bg-green-500 text-white font-bold rounded-lg shadow-lg" });
                 navigate("/");
             }
         } catch (error) {
-            console.log(error);
             toast({
-                title: "Wrong Credentials. Please try again.",
+                title: "Login Failed",
+                description: error.response?.data?.message || "Invalid credentials. Please try again.",
                 variant: "destructive"
-            })
+            });
         } finally {
             dispatch(setLoading(false));
         }
     }
 
     const handleGoogleLogin = () => {
-        window.location.href = `${import.meta.env.VITE_USER_API_END_POINT}/auth/google`;
+        window.open(`http://localhost:5000/api/v1/auth/google`, "_self");
     };
 
     return (
@@ -96,9 +88,25 @@ function Login() {
                         </div>
 
                         {!isOtpLogin ? (
-                            <div className="flex flex-col">
+                            <div className="flex flex-col relative">
                                 <Label htmlFor="password" className="mb-2">Password</Label>
-                                <Input type="password" id="password" name="password" value={input.password} onChange={changeEventHandler} placeholder="Enter your password" />
+                                <div className="relative">
+                                    <Input
+                                        type={showPassword ? "text" : "password"}
+                                        id="password"
+                                        name="password"
+                                        value={input.password}
+                                        onChange={changeEventHandler}
+                                        placeholder="Enter your password"
+                                    />
+                                    <button
+                                        type="button"
+                                        className="absolute right-3 top-3 text-gray-500"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                    >
+                                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                    </button>
+                                </div>
                             </div>
                         ) : otpSent ? (
                             <div className="flex flex-col">
@@ -150,4 +158,4 @@ function Login() {
     );
 }
 
-export default Login
+export default Login;
