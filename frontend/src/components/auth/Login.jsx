@@ -15,11 +15,10 @@ function Login() {
     const [input, setInput] = useState({
         email: "",
         password: "",
-        otp: "",
         role: "student",
     });
-    const [isOtpLogin, setIsOtpLogin] = useState(false);
-    const [otpSent, setOtpSent] = useState(false);
+    // const [isOtpLogin, setIsOtpLogin] = useState(false);
+    // const [otpSent, setOtpSent] = useState(false);
     const [showPassword, setShowPassword] = useState(false); // Track password visibility
 
     const dispatch = useDispatch();
@@ -31,24 +30,25 @@ function Login() {
         setInput({ ...input, [e.target.name]: e.target.value });
     }
 
-    const requestOtp = async () => {
-        try {
-            const res = await axios.post(`${import.meta.env.VITE_USER_API_END_POINT}/otp-login`, { email: input.email, role: input.role });
-            if (res.data.success) {
-                setOtpSent(true);
-                toast({ title: "OTP sent successfully!", className: "bg-green-500 text-white font-bold" });
-            }
-        } catch (error) {
-            toast({ title: "Failed to send OTP.", variant: "destructive" });
-        }
-    };
+    // const requestOtp = async () => {
+    //     try {
+    //         const res = await axios.post(`${import.meta.env.VITE_USER_API_END_POINT}/otp-login`, { email: input.email, role: input.role });
+    //         if (res.data.success) {
+    //             setOtpSent(true);
+    //             toast({ title: "OTP sent successfully!", className: "bg-green-500 text-white font-bold" });
+    //         }
+    //     } catch (error) {
+    //         toast({ title: "Failed to send OTP.", variant: "destructive" });
+    //     }
+    // };
 
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
             dispatch(setLoading(true));
 
-            const endpoint = isOtpLogin ? "/verify-otp" : "/login";
+           // const endpoint = isOtpLogin ? "/verify-otp" : "/login";
+            const endpoint = "/login";
             const res = await axios.post(`${import.meta.env.VITE_USER_API_END_POINT}${endpoint}`, input, {
                 headers: { "Content-Type": "application/json" },
                 withCredentials: true
@@ -87,7 +87,7 @@ function Login() {
                             <Input type="email" id="email" name="email" value={input.email} onChange={changeEventHandler} placeholder="Enter your email" />
                         </div>
 
-                        {!isOtpLogin ? (
+                       
                             <div className="flex flex-col relative">
                                 <Label htmlFor="password" className="mb-2">Password</Label>
                                 <div className="relative">
@@ -108,16 +108,7 @@ function Login() {
                                     </button>
                                 </div>
                             </div>
-                        ) : otpSent ? (
-                            <div className="flex flex-col">
-                                <Label htmlFor="otp" className="mb-2">Enter OTP</Label>
-                                <Input type="text" id="otp" name="otp" value={input.otp} onChange={changeEventHandler} placeholder="Enter OTP" />
-                            </div>
-                        ) : (
-                            <Button type="button" onClick={requestOtp} className="w-full bg-blue-500 hover:bg-blue-600 text-white">
-                                Request OTP
-                            </Button>
-                        )}
+                        
 
                         <div className="flex items-center gap-4">
                             <Label>Role:</Label>
@@ -135,7 +126,7 @@ function Login() {
                             </Button>
                         ) : (
                             <Button type="submit" className="w-full bg-green-500 hover:bg-green-600 text-white">
-                                {isOtpLogin ? "Verify OTP" : "Login"}
+                                Login
                             </Button>
                         )}
                     </form>
@@ -144,11 +135,11 @@ function Login() {
                             Login with Google
                         </Button>
                     </div>
-                    <div className="text-center mt-4">
+                    {/* <div className="text-center mt-4">
                         <Button variant="link" onClick={() => setIsOtpLogin(!isOtpLogin)}>
                             {isOtpLogin ? "Use Password Instead" : "Login with OTP"}
                         </Button>
-                    </div>
+                    </div> */}
                     <p className="text-center text-sm mt-4">
                         Don't have an account? <Link to="/signup" className="text-blue-600">Signup</Link>
                     </p>

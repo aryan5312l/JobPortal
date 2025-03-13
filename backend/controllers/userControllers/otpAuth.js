@@ -1,6 +1,7 @@
 import { User } from "../../models/userModel.js";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
+import bcrypt from "bcrypt";
 
 const otpStorage = new Map(); // Temporary storage for OTPs
 
@@ -29,18 +30,11 @@ export const requestOTP = async (req, res) => {
         }
 
         // Check if user exists
+        
         let user = await User.findOne({ email });
-        if (!user) {
+        if (user) {
             return res.status(400).json({
-                message: "No User found",
-                success: false
-            });
-        }
-
-        // Check if role matches
-        if (role !== user.role) {
-            return res.status(400).json({
-                message: "Account does not exist with current role",
+                message: "User Already Exists",
                 success: false
             });
         }
@@ -68,7 +62,7 @@ export const requestOTP = async (req, res) => {
 // 📌 Route to verify OTP and login
 export const verifyOTP = async (req, res) => {
     try {
-        const { email, otp, role } = req.body;
+        const { email, otp, role, fullname, phoneNumber, profile, password } = req.body; // Add fields for new user
 
         if (!email || !otp || !role) {
             return res.status(400).json({
@@ -86,7 +80,29 @@ export const verifyOTP = async (req, res) => {
 
         let user = await User.findOne({ email });
 
-        // Check if role matches
+        if (!user) {
+            // ✅ If user does not exist, create a new user
+            if(!fullname || !phoneNumber || !password){
+                return res.status(400).json({
+                    message: "All fields are required",
+                    success: false
+                });
+            }
+
+            const hashedPassword = await bcrypt.hash(password, 10);
+            user = new User({
+                email,
+                role,
+                fullname, // Use provided fullname, or default to empty string
+                phoneNumber, // Use provided phoneNumber, or default to empty string
+                profile, // Use provided profile, or default to empty string
+                password: hashedPassword // Use provided password, or default to empty string
+            });
+
+            await user.save();
+        }
+
+        // ✅ Check if role matches (after creating user)
         if (role !== user.role) {
             return res.status(400).json({
                 message: "Account does not exist with current role",
@@ -94,40 +110,26 @@ export const verifyOTP = async (req, res) => {
             });
         }
 
-        const tokenData = {
-            userId: user._id
-        };
+        const tokenData = { userId: user._id };
 
         let token;
         try {
             token = jwt.sign(tokenData, process.env.SECRET_KEY, { expiresIn: "1d" });
         } catch (err) {
             console.error("Token generation failed:", err);
-            return res.status(500).json({
-                message: "Internal Server Error",
-                success: false
-            });
+            return res.status(500).json({ message: "Internal Server Error", success: false });
         }
-
-        user = {
-            _id: user.id,
-            fullname: user.fullname,
-            email: user.email,
-            phoneNumber: user.phoneNumber,
-            role: user.role,
-            profile: user.profile
-        };
 
         res.status(200)
             .cookie("token", token, {
                 maxAge: 24 * 60 * 60 * 1000, // 1 day
                 httpOnly: true,
-                secure: process.env.NODE_ENV === "production", 
+                secure: process.env.NODE_ENV === "production",
                 sameSite: "Lax",
                 path: "/",
             })
             .json({
-                message: `Welcome back ${user.fullname}`,
+                message: user.isNew ? `Account created successfully! Welcome, ${user.fullname}` : `Welcome back ${user.fullname}`,
                 user,
                 success: true
             });
