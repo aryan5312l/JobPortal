@@ -10,6 +10,7 @@ import { User } from "../models/userModel.js";
 import { verifyToken } from "../verifyToken.js";
 import { requestOTP, verifyOTP } from "../controllers/userControllers/otpAuth.js";
 import rateLimit from "express-rate-limit";
+import { forgotPassword, resetPassword } from "../controllers/userControllers/forgetPassword.js";
 
 const router = express.Router();
 
@@ -41,5 +42,9 @@ router.get("/me", verifyToken, async (req, res) => {
         res.status(500).json({ success: false, message: "Server error" });
     }
 });
+
+//Forgot Password
+router.route("/forgot-password").post(forgotPassword);
+router.route("/reset-password").post(resetPassword);
 
 export default router;

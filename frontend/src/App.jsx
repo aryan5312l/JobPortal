@@ -20,6 +20,8 @@ import CreateJob from './components/jobs/CreateJob'
 import JobApplicants from './components/recruiter/JobApplicants'
 import ProtectedRoute from './components/auth/ProtectedRoute'
 import GoogleCallback from './components/auth/GoogleCallback'
+import ForgotPassword from './components/auth/ForgotPassword'
+import ResetPassword from './components/auth/ResetPassword'
 
 
 function App() {
@@ -99,7 +101,18 @@ function App() {
           path: '/jobdescription/:id',
           element: <JobsDescription />,
         },
-        {path: "/auth/google/callback", element: <GoogleCallback /> },
+        {
+          path: "/auth/google/callback", 
+          element: <GoogleCallback /> 
+        },
+        {
+          path: "/forgot-password",
+          element: <ForgotPassword/>
+        },
+        {
+          path: "/reset-password/:token",
+          element: <ResetPassword/>
+        }
       ],
     },
 

@@ -47,7 +47,7 @@ function Login() {
         try {
             dispatch(setLoading(true));
 
-           // const endpoint = isOtpLogin ? "/verify-otp" : "/login";
+            // const endpoint = isOtpLogin ? "/verify-otp" : "/login";
             const endpoint = "/login";
             const res = await axios.post(`${import.meta.env.VITE_USER_API_END_POINT}${endpoint}`, input, {
                 headers: { "Content-Type": "application/json" },
@@ -87,28 +87,28 @@ function Login() {
                             <Input type="email" id="email" name="email" value={input.email} onChange={changeEventHandler} placeholder="Enter your email" />
                         </div>
 
-                       
-                            <div className="flex flex-col relative">
-                                <Label htmlFor="password" className="mb-2">Password</Label>
-                                <div className="relative">
-                                    <Input
-                                        type={showPassword ? "text" : "password"}
-                                        id="password"
-                                        name="password"
-                                        value={input.password}
-                                        onChange={changeEventHandler}
-                                        placeholder="Enter your password"
-                                    />
-                                    <button
-                                        type="button"
-                                        className="absolute right-3 top-3 text-gray-500"
-                                        onClick={() => setShowPassword(!showPassword)}
-                                    >
-                                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                                    </button>
-                                </div>
+
+                        <div className="flex flex-col relative">
+                            <Label htmlFor="password" className="mb-2">Password</Label>
+                            <div className="relative">
+                                <Input
+                                    type={showPassword ? "text" : "password"}
+                                    id="password"
+                                    name="password"
+                                    value={input.password}
+                                    onChange={changeEventHandler}
+                                    placeholder="Enter your password"
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute right-3 top-3 text-gray-500"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </button>
                             </div>
-                        
+                        </div>
+
 
                         <div className="flex items-center gap-4">
                             <Label>Role:</Label>
@@ -119,6 +119,12 @@ function Login() {
                                 <Input type="radio" name="role" value="recruiter" checked={input.role === "recruiter"} onChange={changeEventHandler} /> Recruiter
                             </label>
                         </div>
+
+                        <p className="text-right text-sm mt-4">
+                            <Link to="/forgot-password" className="text-blue-600 hover:underline">
+                                Forgot Password?
+                            </Link>
+                        </p>
 
                         {loading ? (
                             <Button className="w-full" disabled>
