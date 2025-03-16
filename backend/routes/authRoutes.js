@@ -67,7 +67,7 @@ router.get(
             );
 
             // Redirect to frontend with JWT
-            res.redirect(`http://localhost:5173/auth/google/callback?token=${token}`);
+            res.redirect(`${process.env.BASE_URL}/auth/google/callback?token=${token}`);
         } catch (error) {
             console.error("Error generating JWT:", error);
             res.status(500).json({ error: "Internal Server Error" });
