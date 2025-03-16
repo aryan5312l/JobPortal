@@ -71,7 +71,7 @@ function Login() {
     }
 
     const handleGoogleLogin = () => {
-        window.open(`http://localhost:5000/api/v1/auth/google`, "_self");
+        window.open(`${import.meta.env.VITE_AUTH_API_END_POINT}/google`, "_self");
     };
 
     return (
