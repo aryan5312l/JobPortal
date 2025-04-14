@@ -1,58 +1,135 @@
 
 import { Badge } from "@/components/ui/badge"
-import { useSelector } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { Bookmark } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
+import { addBookmark, removeBookmark } from "../../redux/bookmarkSlice";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { Tooltip } from "@mui/material";
 
 //const random = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
 
 function LatestJobCards() {
-
-    
     const { filteredJobs } = useSelector(store => store.job);
+    const { bookmarkedJobs } = useSelector(store => store.bookmark);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+
     const handleJobDescription = (id) => {
         navigate(`/jobdescription/${id}`);
     }
 
+    const isBookmarked = (id) => bookmarkedJobs.includes(id);
+
+    const toggleBookmark = (e, id) => {
+        e.stopPropagation(); // Prevent triggering the job card click event
+        if (isBookmarked(id)) {
+            dispatch(removeBookmark(id));
+        } else {
+            dispatch(addBookmark(id));
+        }
+    };
+
     const truncateText = (text, maxLength = 100) => {
         if (text.length > maxLength) {
-          return text.slice(0, maxLength) + "...";
+            return text.slice(0, maxLength) + "...";
         }
         return text;
-      };
+    };
+
+    const getPostedDaysAgo = (dateStr) => {
+        const postedDate = new Date(dateStr);
+        const today = new Date();
+        const diffTime = today - postedDate;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays <= 0 ? "Posted today" : `Posted ${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
+    };
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-8 px-8">
             {
-                filteredJobs.length <= 0 ? "No Jobs are available" : filteredJobs.map((item) => (
-                    
-                    <div
-                        key={item._id}
-                        className='p-5 rounded-md border shadow-xl border-gray-500 cursor-pointer' 
-                        onClick={() => handleJobDescription(item._id)}>
-                        <div>
-                        
-                            <h1 className='font-medium text-lg'>{item.company.name}</h1>
-                            <p className='text-sm text-gray-400'>{item.location}</p>
-                        </div>
-                        <div>
-                            <h1 className='font-bold text-lg'>{item.title}</h1>
-                            
-                            <p className='text-sm text-gray-600'>{truncateText(item.description, 100)}</p>
+                filteredJobs.length <= 0 ? "No Jobs are available" : filteredJobs.map((item, index) => {
+                    const isFirst = index === 0;
+                    const isLast = index === filteredJobs.length - 1;
 
+                    return (
+
+                        <div
+                            key={item._id}
+                            className={`relative p-5 rounded-md border shadow-xl border-gray-500 cursor-pointer transition-transform duration-200 hover:scale-[1.01] ${isFirst || isLast
+                                    ? "border-[2px] border-purple-600 shadow-purple-400"
+                                    : ""
+                                }`}
+                            onClick={() => handleJobDescription(item._id)}>
+
+                            <Tooltip title={isBookmarked(item._id) ? "Unsave" : "Save"} arrow>
+                                <div
+                                    className="absolute top-2 right-2 z-10 text-xl text-pink-600 hover:scale-110 transition-transform"
+                                    onClick={(e) => toggleBookmark(e, item._id)}
+                                >
+                                    {isBookmarked(item._id) ? <FaHeart /> : <FaRegHeart />}
+                                </div>
+                            </Tooltip>
+
+                            {/* Logo and Save Icon */}
+                            <div className="flex items-center gap-4 mb-4">
+                                <img
+                                    src={item.company.logo || "https://via.placeholder.com/40"}
+                                    alt={item.company.name}
+                                    className="w-12 h-12 rounded-full border object-cover"
+                                />
+                                <div>
+                                    <h2 className="text-lg font-semibold text-gray-800">{item.company.name}</h2>
+                                    <p className="text-sm text-gray-500">{item.location}</p>
+                                </div>
+                            </div>
+
+                                {/* Bookmark Icon */}
+                                {/* <Bookmark
+                                    size={20}
+                                    className="text-gray-400 hover:text-purple-500 transition"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        console.log("Saved job:", item._id);
+                                        // handle save logic here
+                                    }}
+                                /> */}
+                            
+
+                            {/* Role Info */}
+                            <div className="mb-4">
+                                <h3 className='text-xl font-bold text-purple-700'>{item.title}</h3>
+                                <p className='text-sm text-gray-600 mt-1'>{truncateText(item.description, 100)}</p>
+                            </div>
+
+                            {/* Tags */}
+                            <div className='flex flex-wrap gap-2 mt-auto'>
+                                <Badge className='bg-blue-100 text-blue-700 font-medium'>{item.position} position</Badge>
+                                <Badge className='bg-red-100 text-red-600 font-medium'>{item.jobType}</Badge>
+                                <Badge className='bg-purple-100 text-purple-700 font-medium'>{item.salary}Lpa</Badge>
+                            </div>
+
+                            {/* Bottom Footer: Posted Date + View Button */}
+                            <div className="flex justify-between items-center mt-auto pt-2 border-t border-gray-200">
+                                <p className="text-xs text-gray-500">{getPostedDaysAgo(item.createdAt)}</p>
+                                <button
+                                    className="text-sm font-medium text-purple-600 hover:underline"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleJobDescription(item._id);
+                                    }}
+                                >
+                                    View Details →
+                                </button>
+                            </div>
                         </div>
-                        <div className='flex items-center gap-2 mt-4'>
-                            <Badge className='text-blue-700 font-bold' variant='ghost'>{item.position} position</Badge>
-                            <Badge className='text-[#F83002] font-bold' variant='ghost'>{item.jobType}</Badge>
-                            <Badge className='text-[#7209b7] font-bold' variant='ghost'>{item.salary}Lpa</Badge>
-                        </div>
-                    </div>
-                ))
+                    );
+                })
             }
         </div>
-    )
-}
+            );
+        }
+    
+
 
 export default LatestJobCards
