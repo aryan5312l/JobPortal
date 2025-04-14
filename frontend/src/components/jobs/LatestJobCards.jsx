@@ -56,15 +56,15 @@ function LatestJobCards() {
 
                         <div
                             key={item._id}
-                            className={`relative p-5 rounded-md border shadow-xl border-gray-500 cursor-pointer transition-transform duration-200 hover:scale-[1.01] ${isFirst || isLast
-                                    ? "border-[2px] border-purple-600 shadow-purple-400"
-                                    : ""
+                            className={`relative p-5 rounded-md border shadow-xl border-gray-500 cursor-pointer transition-all duration-200 hover:shadow-xl hover:translate-y-[-2px] flex flex-col h-full dark:border-white ${isFirst || isLast
+                                ? "border-[2px] border-purple-600 shadow-purple-400"
+                                : "border-gray-300"
                                 }`}
                             onClick={() => handleJobDescription(item._id)}>
 
                             <Tooltip title={isBookmarked(item._id) ? "Unsave" : "Save"} arrow>
                                 <div
-                                    className="absolute top-2 right-2 z-10 text-xl text-pink-600 hover:scale-110 transition-transform"
+                                    className="absolute top-3 right-3 z-10 text-xl text-pink-600 hover:scale-110 transition-transform"
                                     onClick={(e) => toggleBookmark(e, item._id)}
                                 >
                                     {isBookmarked(item._id) ? <FaHeart /> : <FaRegHeart />}
@@ -79,13 +79,13 @@ function LatestJobCards() {
                                     className="w-12 h-12 rounded-full border object-cover"
                                 />
                                 <div>
-                                    <h2 className="text-lg font-semibold text-gray-800">{item.company.name}</h2>
-                                    <p className="text-sm text-gray-500">{item.location}</p>
+                                    <h2 className="text-lg font-semibold">{item.company.name}</h2>
+                                    <p className="text-sm text-gray-500 dark:text-gray-300">{item.location}</p>
                                 </div>
                             </div>
 
-                                {/* Bookmark Icon */}
-                                {/* <Bookmark
+                            {/* Bookmark Icon */}
+                            {/* <Bookmark
                                     size={20}
                                     className="text-gray-400 hover:text-purple-500 transition"
                                     onClick={(e) => {
@@ -94,42 +94,44 @@ function LatestJobCards() {
                                         // handle save logic here
                                     }}
                                 /> */}
-                            
+
 
                             {/* Role Info */}
-                            <div className="mb-4">
+                            <div className="mb-4 ">
                                 <h3 className='text-xl font-bold text-purple-700'>{item.title}</h3>
-                                <p className='text-sm text-gray-600 mt-1'>{truncateText(item.description, 100)}</p>
+                                <p className='text-sm text-gray-600 dark:text-gray-300'>{truncateText(item.description, 100)}</p>
                             </div>
 
                             {/* Tags */}
-                            <div className='flex flex-wrap gap-2 mt-auto'>
+                            <div className='flex flex-wrap gap-2 mb-4'>
                                 <Badge className='bg-blue-100 text-blue-700 font-medium'>{item.position} position</Badge>
                                 <Badge className='bg-red-100 text-red-600 font-medium'>{item.jobType}</Badge>
                                 <Badge className='bg-purple-100 text-purple-700 font-medium'>{item.salary}Lpa</Badge>
                             </div>
 
                             {/* Bottom Footer: Posted Date + View Button */}
-                            <div className="flex justify-between items-center mt-auto pt-2 border-t border-gray-200">
-                                <p className="text-xs text-gray-500">{getPostedDaysAgo(item.createdAt)}</p>
-                                <button
-                                    className="text-sm font-medium text-purple-600 hover:underline"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleJobDescription(item._id);
-                                    }}
-                                >
-                                    View Details →
-                                </button>
+                            <div className="mt-auto pt-3 border-t border-gray-200">
+                                <div className="flex justify-between items-center">
+                                    <p className="text-xs text-gray-500 dark:text-gray-300">{getPostedDaysAgo(item.createdAt)}</p>
+                                    <button
+                                        className="text-sm font-medium text-purple-600 hover:underline"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleJobDescription(item._id);
+                                        }}
+                                    >
+                                        View Details →
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     );
                 })
             }
         </div>
-            );
-        }
-    
+    );
+}
+
 
 
 export default LatestJobCards

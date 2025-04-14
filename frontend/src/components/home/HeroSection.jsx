@@ -29,25 +29,26 @@ function HeroSection() {
   }, [searchKeyword, dispatch]);
 
   return (
-    <div className="text-center my-6">
+    <div className="text-center my-10 px-4">
 
-      <h1 className="text-5xl font-bold my-4">
+      <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
         Search, Apply & <br />Get Your <span className="text-[#6A38C2]">Dream Job</span>
       </h1>
-      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p>
-      <div className="flex w-[40%] text-center mx-auto my-4">
+      <p>Discover your ideal role in seconds. Apply confidently and land your perfect job!</p>
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-0 w-full max-w-xl mx-auto my-4">
         <input
           type="text"
-          placeholder="Find your dream job"
-          className="outline-none border-none w-full rounded-l-full pl-4"
+          placeholder="Search by job title, company, or skill"
+          className="w-full px-4 py-2 rounded-full sm:rounded-l-full sm:rounded-r-none border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-sm text-sm transition"
           value={searchKeyword}
           //onKeyDown={handleKeyDown}
           onChange={(e) => setSearchKeyword(e.target.value)}
         />
         <Button
-          className="rounded-r-full bg-[#6A38C2]"
+          className="rounded-full sm:rounded-r-full sm:rounded-l-none bg-[#6A38C2] hover:bg-[#5a2fad] text-white px-6 py-2 transition"
           onClick={handleSearch}>
-          <Search />
+          <Search size={18} className="mr-2"/>
+          Search
         </Button>
       </div>
     </div>

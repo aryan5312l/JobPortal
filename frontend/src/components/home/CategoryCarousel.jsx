@@ -45,28 +45,35 @@ function CategoryCarousel() {
   };
 
   return (
-    <div className="py-6">
-      <h2 className="text-center text-2xl font-bold mb-4">Explore Categories</h2>
-      <Carousel className="w-full max-w-3xl mx-auto">
-        <CarouselContent className="flex flex-nowrap">
-          {categories.map((cat, index) => (
-            <CarouselItem key={index} className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 px-2">
-              <Button
-                variant={activeCategory === cat ? "default" : "outline"}
-                className={`w-full whitespace-nowrap rounded-full px-6 py-2 text-sm font-semibold transition-all duration-300 ${activeCategory === cat
-                    ? "bg-[#6A38C2] text-white"
-                    : "hover:bg-[#6A38C2] hover:text-white"
-                  }`}
-                onClick={() => handleCategoryClick(cat)}
+    <div className="relative py-8 max-w-5xl mx-auto">
+      <h2 className="text-center text-2xl font-bold mb-6">Explore Categories</h2>
+
+      <div className="relative">
+        <Carousel>
+          <CarouselContent className="flex -ml-2">
+            {categories.map((cat, index) => (
+              <CarouselItem
+                key={index}
+                className="pl-2 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5"
               >
-                {cat}
-              </Button>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious aria-label="Previous category" />
-        <CarouselNext aria-label="Next category" />
-      </Carousel>
+                <Button
+                  variant={activeCategory === cat ? "default" : "outline"}
+                  className={`w-full whitespace-nowrap rounded-full px-6 py-2 text-sm font-semibold transition-all duration-300 transform hover:scale-105 ${
+                    activeCategory === cat
+                      ? "bg-[#6A38C2] text-white shadow-md"
+                      : "border-gray-300  hover:bg-[#6A38C2] hover:text-white"
+                  }`}
+                  onClick={() => handleCategoryClick(cat)}
+                >
+                  {cat}
+                </Button>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="left-0 -translate-x-full" />
+          <CarouselNext className="right-0 translate-x-full" />
+        </Carousel>
+      </div>
     </div>
   );
 }
