@@ -29,12 +29,13 @@ function HeroSection() {
   }, [searchKeyword, dispatch]);
 
   return (
-    <div className="text-center my-10 px-4">
-
-      <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
-        Search, Apply & <br />Get Your <span className="text-[#6A38C2]">Dream Job</span>
+    <div className="text-center px-4 py-24 max-w-6xl mx-auto rounded-xl ">
+      <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">
+        Search, Apply & <br />
+        Get Your <span className="text-[#6A38C2]">Dream Job</span>
       </h1>
-      <p>Discover your ideal role in seconds. Apply confidently and land your perfect job!</p>
+      <p className="text-gray-600">Discover your ideal role. Apply confidently and land your perfect job!</p>
+
       <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-0 w-full max-w-xl mx-auto my-4">
         <input
           type="text"

@@ -17,11 +17,11 @@ function Home() {
     }, [user, navigate]);
   
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-b from-[#f8f5ff] to-white">
         <HeroSection/>
         <CategoryCarousel/>
         <LatestJobs/>
-    </>
+    </div>
     
   )
 }

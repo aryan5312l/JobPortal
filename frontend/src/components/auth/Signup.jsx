@@ -6,12 +6,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import axios from "axios"
 import { Loader2 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
-
+import { RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast"
 import { useDispatch, useSelector } from "react-redux"
 import { setLoading, setUser } from "../../redux/authSlice"
 import { User } from "../../../../backend/models/userModel"
-
+import { Eye, EyeOff } from 'lucide-react'
 
 function Signup() {
     const navigate = useNavigate();
@@ -21,6 +21,7 @@ function Signup() {
     const [otpSent, setOtpSent] = useState(false);
     const [otpVerified, setOtpVerified] = useState(false);
     const [otp, setOtp] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     const [input, setInput] = useState({
         fullname: "",
@@ -138,163 +139,228 @@ function Signup() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-            <div className="bg-white shadow-md rounded-lg px-8 py-6 w-full max-w-md">
-                <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-                    Sign Up
-                </h2>
-                <form onSubmit={submitHandler} className="space-y-3">
-                    {!otpSent ? (
-                        <>
-                            {/* Email */}
-                            <div className="flex flex-col">
-                                <Label htmlFor="email" className="text-gray-600 mb-2">
-                                    Email Address
-                                </Label>
-                                <Input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={input.email}
-                                    onChange={changeEventHandler}
-                                    placeholder="Enter your email"
-                                />
-                            </div>
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-4">
+            <div className="w-full max-w-md">
+                {/* Signup Card */}
+                <div className="bg-white rounded-xl shadow-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                    {/* Header */}
+                    <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-center">
+                        <h1 className="text-3xl font-bold text-white">Create Account</h1>
+                        <p className="text-blue-100 mt-2">Join our community today</p>
+                    </div>
 
-                            {/* Full Name */}
-                            <div className="flex flex-col">
-                                <Label htmlFor="fullname" className="text-gray-600 mb-2">
-                                    Full Name
-                                </Label>
-                                <Input
-                                    type="text"
-                                    id="fullname"
-                                    name="fullname"
-                                    value={input.fullname}
-                                    onChange={changeEventHandler}
-                                    placeholder="Enter your name"
-                                />
-                            </div>
-
-                            {/* Phone Number */}
-                            <div className="flex flex-col">
-                                <Label htmlFor="phoneNumber" className="text-gray-600 mb-2">
-                                    Phone Number
-                                </Label>
-                                <Input
-                                    type="text"
-                                    id="phoneNumber"
-                                    name="phoneNumber"
-                                    value={input.phoneNumber}
-                                    onChange={changeEventHandler}
-                                    placeholder="Phone Number"
-                                />
-                            </div>
-
-                            {/* Password */}
-                            <div className="flex flex-col">
-                                <Label htmlFor="password" className="text-gray-600 mb-2">
-                                    Password
-                                </Label>
-                                <Input
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    value={input.password}
-                                    onChange={changeEventHandler}
-                                    placeholder="Enter your password"
-                                />
-                            </div>
-
-                            {/* Role Selection */}
-                            <RadioGroup className="flex">
-                                <div className="flex items-center space-x-2">
+                    <div className="p-8">
+                        {!otpSent ? (
+                            <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
+                                {/* Full Name */}
+                                <div>
+                                    <Label htmlFor="fullname" className="block text-sm font-medium text-gray-700 mb-1">
+                                        Full Name
+                                    </Label>
                                     <Input
-                                        type="radio"
-                                        name="role"
-                                        value="student"
-                                        checked={input.role === "student"}
+                                        type="text"
+                                        id="fullname"
+                                        name="fullname"
+                                        value={input.fullname}
                                         onChange={changeEventHandler}
+                                        placeholder="John Doe"
+                                        className="focus:ring-2 focus:ring-blue-500"
+                                        required
                                     />
-                                    <Label>Student</Label>
                                 </div>
-                                <div className="flex items-center space-x-2">
+
+                                {/* Email */}
+                                <div>
+                                    <Label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                                        Email Address
+                                    </Label>
                                     <Input
-                                        type="radio"
-                                        name="role"
-                                        value="recruiter"
-                                        checked={input.role === "recruiter"}
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        value={input.email}
                                         onChange={changeEventHandler}
+                                        placeholder="your@email.com"
+                                        className="focus:ring-2 focus:ring-blue-500"
+                                        required
                                     />
-                                    <Label>Recruiter</Label>
                                 </div>
-                            </RadioGroup>
 
-                            {/* Profile Upload */}
-                            <div>
-                                <Label>Profile</Label>
-                                <Input accept="image/*" type="file" onChange={changeFileHandler} />
-                            </div>
+                                {/* Phone Number */}
+                                <div>
+                                    <Label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700 mb-1">
+                                        Phone Number
+                                    </Label>
+                                    <Input
+                                        type="tel"
+                                        id="phoneNumber"
+                                        name="phoneNumber"
+                                        value={input.phoneNumber}
+                                        onChange={changeEventHandler}
+                                        placeholder="+91 234 567 8900"
+                                        className="focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
 
-                            {/* Request OTP Button */}
-                            {loading ? (
-                                <Button className="w-full" disabled>
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...
-                                </Button>
-                            ) : (<button
-                                type="button"
-                                onClick={requestOtp}
-                                className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
-                            >
-                                Send OTP
-                            </button>
-                            )}
-                        </>
-                    ) : (
-                        <>
-                            {/* OTP Verification */}
-                            <div className="flex flex-col">
-                                <Label htmlFor="otp" className="text-gray-600 mb-2">
-                                    Enter OTP
-                                </Label>
-                                <Input
-                                    type="text"
-                                    id="otp"
-                                    name="otp"
-                                    value={otp}
-                                    onChange={(e) => setOtp(e.target.value)}
-                                    placeholder="Enter OTP"
-                                />
-                            </div>
+                                {/* Password */}
+                                <div>
+                                    <Label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                                        Password
+                                    </Label>
+                                    <div className="relative">
+                                        <Input
+                                            type={showPassword ? "text" : "password"}
+                                            id="password"
+                                            name="password"
+                                            value={input.password}
+                                            onChange={changeEventHandler}
+                                            placeholder="••••••••"
+                                            className="focus:ring-2 focus:ring-blue-500 pr-10"
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            aria-label={showPassword ? "Hide password" : "Show password"}
+                                        >
+                                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                        </button>
+                                    </div>
+                                </div>
 
-                            {/* Verify OTP Button */}
-                            <button
-                                type="button"
-                                onClick={verifyOtp}
-                                className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600"
-                            >
-                                Verify OTP
-                            </button>
+                                {/* Role Selection */}
+                                <div className="space-y-2">
+                                    <Label className="block text-sm font-medium text-gray-700">
+                                        I am a:
+                                    </Label>
+                                    <RadioGroup 
+                                        defaultValue="student" 
+                                        className="flex gap-4"
+                                        onValueChange={(value) => setInput({...input, role: value})}
+                                    >
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem value="student" id="student" />
+                                            <Label htmlFor="student">Student</Label>
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem value="recruiter" id="recruiter" />
+                                            <Label htmlFor="recruiter">Recruiter</Label>
+                                        </div>
+                                    </RadioGroup>
+                                </div>
 
-                            {/* Submit Registration Button (Only visible after OTP is verified)
-                            {otpVerified && (
-                                <button
-                                    type="submit"
-                                    className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
+                                {/* Profile Picture */}
+                                <div>
+                                    <Label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Profile Picture (Optional)
+                                    </Label>
+                                    <div className="flex items-center gap-2">
+                                        <Input
+                                            id="file"
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={changeFileHandler}
+                                            className="focus:ring-2 focus:ring-blue-500"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Request OTP Button */}
+                                <Button
+                                    onClick={requestOtp}
+                                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 rounded-lg shadow-md"
+                                    disabled={loading}
                                 >
-                                    Sign Up
-                                </button>
-                            )} */}
-                        </>
-                    )}
+                                    {loading ? (
+                                        <>
+                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                            Sending OTP...
+                                        </>
+                                    ) : (
+                                        "Send OTP"
+                                    )}
+                                </Button>
+                            </form>
+                        ) : (
+                            <div className="space-y-5">
+                                {/* OTP Verification */}
+                                <div>
+                                    <Label htmlFor="otp" className="block text-sm font-medium text-gray-700 mb-1">
+                                        Enter OTP
+                                    </Label>
+                                    <Input
+                                        type="text"
+                                        id="otp"
+                                        name="otp"
+                                        value={otp}
+                                        onChange={(e) => setOtp(e.target.value)}
+                                        placeholder="Enter 6-digit OTP"
+                                        className="focus:ring-2 focus:ring-blue-500"
+                                        required
+                                    />
+                                    <p className="text-xs text-gray-500 mt-1">
+                                        We've sent a 6-digit code to {input.email}
+                                    </p>
+                                </div>
 
-                    <span className="text-sm my-2">
-                        Already have an account?{" "}
-                        <Link to="/login" className="text-blue-600">
-                            Login
-                        </Link>
-                    </span>
-                </form>
+                                {/* Verify OTP Button */}
+                                <Button
+                                    onClick={verifyOtp}
+                                    className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg shadow-md"
+                                    disabled={loading}
+                                >
+                                    {loading ? (
+                                        <>
+                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                            Verifying...
+                                        </>
+                                    ) : (
+                                        "Verify OTP"
+                                    )}
+                                </Button>
+
+                                {/* Complete Registration Button */}
+                                {otpVerified && (
+                                    <Button
+                                        onClick={submitHandler}
+                                        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg shadow-md"
+                                        disabled={loading}
+                                    >
+                                        {loading ? (
+                                            <>
+                                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                Completing Registration...
+                                            </>
+                                        ) : (
+                                            "Complete Registration"
+                                        )}
+                                    </Button>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Login Link */}
+                        <div className="mt-6 text-center text-sm">
+                            <p className="text-gray-600">
+                                Already have an account?{' '}
+                                <Link 
+                                    to="/login" 
+                                    className="font-medium text-blue-600 hover:text-blue-500 hover:underline"
+                                >
+                                    Sign in
+                                </Link>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Footer */}
+                <div className="mt-6 text-center">
+                    <p className="text-gray-500 text-sm">
+                        © {new Date().getFullYear()} JobPortal. All rights reserved.
+                    </p>
+                </div>
             </div>
         </div>
     );

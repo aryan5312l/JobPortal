@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useToast } from "@/hooks/use-toast"
 import { updateJobApplications } from '../../redux/jobSlice';
+import { Briefcase, Building2, CalendarDays, DollarSign, ListCheck, MapPin, User } from 'lucide-react';
+import { Button } from '../ui/button';
 
 
 function JobsDescription() {
@@ -107,33 +109,91 @@ function JobsDescription() {
     //console.log(user._id);
     //console.log(hasApplied);
     return (
-        <div className='max-w-5xl mx-auto px-4 lg:px- my-20 '>
-            {console.log(id)}
-            <div className='flex justify-between'>
-                <h1 className='font-bold text-lg'>{job.title}</h1>
-                <div className='cursor-pointer ' onClick={handleApply}>
-                    <Badge variant="outline" className='px-4'>{user ? (hasApplied ? "Applied" : "Apply") : "Apply"}</Badge>
+        <div className="max-w-5xl mx-auto px-4 py-6">
+            {/* Sticky Header with Title & Apply */}
+            <div className="sticky top-0 z-10 bg-white shadow-sm py-4 flex justify-between items-center border-b">
+                <div>
+                    <h1 className="text-2xl font-semibold">{job.title}</h1>
+                    <p className="text-gray-500 text-sm">
+                        {job.company.name} • {job.location}
+                    </p>
+                </div>
+                <Button
+                    variant={hasApplied ? "secondary" : "default"}
+                    onClick={handleApply}
+                    disabled={hasApplied}
+                    className="px-6 py-2 text-white bg-blue-600 hover:bg-blue-700 transition-all"
+                >
+                    {user ? (hasApplied ? "Applied" : "Apply Now") : "Login to Apply"}
+                </Button>
+            </div>
+
+            {/* Job Highlights */}
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="bg-gray-50 p-4 rounded-md border">
+                    <h4 className="text-sm font-medium text-gray-600">Job Type</h4>
+                    <p className="text-base font-semibold text-black">{job.jobType}</p>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-md border">
+                    <h4 className="text-sm font-medium text-gray-600">Experience Level</h4>
+                    <p className="text-base font-semibold text-black">{job.experienceLevel}</p>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-md border">
+                    <h4 className="text-sm font-medium text-gray-600">Salary</h4>
+                    <p className="text-base font-semibold text-black">{job.salary} LPA</p>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-md border">
+                    <h4 className="text-sm font-medium text-gray-600">Applicants</h4>
+                    <p className="text-base font-semibold text-black">{job.applications.length}</p>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-md border">
+                    <h4 className="text-sm font-medium text-gray-600">Posted</h4>
+                    <p className="text-base font-semibold text-black">{calculateDaysAgo(job.createdAt)} days ago</p>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-md border">
+                    <h4 className="text-sm font-medium text-gray-600">Position</h4>
+                    <p className="text-base font-semibold text-black">{job.position}</p>
                 </div>
             </div>
-            <div className='flex items-center gap-2 mt-2'>
-                <Badge className='text-blue-700 font-bold' variant='ghost'>{job.position} position</Badge>
-                <Badge className='text-[#F83002] font-bold' variant='ghost'>{job.jobType}</Badge>
-                <Badge className='text-[#7209b7] font-bold' variant='ghost'>{job.salary}Lpa</Badge>
+
+            {/* Description Section */}
+            <div className="mt-10">
+                <h2 className="text-xl font-semibold mb-3">Job Description</h2>
+                <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                    {job.description}
+                </p>
             </div>
-            <div className='mt-2 py-2  border-b-2'>
-                <span>Job Description</span>
+
+            {/* Requirements */}
+            <div className="mt-8">
+                <h2 className="text-xl font-semibold mb-3">Requirements</h2>
+                <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                    {job.requirements}
+                </p>
             </div>
-            <div className='mt-2'>
-                <h2>Company: <span className='text-sm text-gray-400'>{job.company.name}</span></h2>
-                <h2>Location: <span className='text-sm text-gray-400'>{job.location}</span></h2>
-                <h2>Description: <span className='text-sm text-gray-400'> {job.description}</span></h2>
-                <h2>Experience: <span className='text-sm text-gray-400'>{job.experienceLevel}</span></h2>
-                <h2>Requirements: <span className='text-sm text-gray-400'>{job.requirements}</span></h2>
-                <h2>Total Applicants: <span className='text-sm text-gray-400'>{job.applications.length}</span></h2>
-                <h2>Posted: <span className='text-sm text-gray-400'>{calculateDaysAgo(job.createdAt)} days ago</span></h2>
+
+            {/* Company Info */}
+            <div className="mt-10">
+                <h2 className="text-xl font-semibold mb-3">About the Company</h2>
+                <div className="bg-white p-4 border rounded-md">
+                    <p className="text-sm text-gray-600">{job.company.name}</p>
+                    <p className="text-sm text-gray-500">{job.company.description || "No description available."}</p>
+                </div>
+            </div>
+
+            {/* Apply Button at Bottom for Mobile */}
+            <div className="fixed bottom-0 left-0 right-0 bg-white shadow-md p-4 flex justify-center md:hidden z-20">
+                <Button
+                    variant={hasApplied ? "secondary" : "default"}
+                    onClick={handleApply}
+                    disabled={hasApplied}
+                    className="w-full max-w-md text-white bg-blue-600 hover:bg-blue-700 transition-all"
+                >
+                    {user ? (hasApplied ? "Applied" : "Apply Now") : "Login to Apply"}
+                </Button>
             </div>
         </div>
-    )
+    );
 }
 
 export default JobsDescription
