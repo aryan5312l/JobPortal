@@ -2,18 +2,58 @@
 import { Badge } from "@/components/ui/badge"
 import { useDispatch, useSelector } from 'react-redux';
 import { Bookmark } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { addBookmark, removeBookmark } from "../../redux/bookmarkSlice";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { Tooltip } from "@mui/material";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { SkeletonJobCard } from "./SkeletonJobCard";
+//import { parse } from "path";
 
 //const random = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
 
 function LatestJobCards() {
-    const { filteredJobs } = useSelector(store => store.job);
+    //const { filteredJobs } = useSelector(store => store.job);
     const { bookmarkedJobs } = useSelector(store => store.bookmark);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const [loading, setLoading] = useState(true);
+
+    const [searchParams] = useSearchParams();
+    const keyword = searchParams.get("keyword") || ""; // Get the keyword from the URL
+    const currentPage = parseInt(searchParams.get("page")) || 1; // Get the page number from the URL
+
+    const [jobs, setJobs] = useState([]);
+    //const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const limit = 9;
+
+    useEffect(() => {
+        setLoading(true);
+
+        const delayDebounce = setTimeout(() => {
+            const fetchJobs = async () => {
+                try {
+                    const res = await axios.get(`${import.meta.env.VITE_JOB_API_END_POINT}/get?keyword=${encodeURIComponent(keyword)}&page=${currentPage}&limit=${limit}`);
+                    if (res.data.success) {
+                        setJobs(res.data.jobs);
+                        setTotalPages(res.data.totalPages);
+                    }
+                } catch (error) {
+                    console.error("Error fetching jobs:", error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            fetchJobs();
+        }, 400); // Adjust delay as needed (300-500ms is ideal)
+
+        return () => clearTimeout(delayDebounce); // Cleanup on keyword/page change
+    }, [keyword, currentPage]);
+
 
     const handleJobDescription = (id) => {
         navigate(`/jobdescription/${id}`);
@@ -45,47 +85,85 @@ function LatestJobCards() {
         return diffDays <= 0 ? "Posted today" : `Posted ${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
     };
 
+    const handlePageChange = (newPage) => {
+        navigate(`/?keyword=${encodeURIComponent(keyword)}&page=${newPage}`);
+    };
+
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-8 px-8">
-            {
-                filteredJobs.length <= 0 ? "No Jobs are available" : filteredJobs.map((item, index) => {
-                    const isFirst = index === 0;
-                    const isLast = index === filteredJobs.length - 1;
+        <>
+            {/* Pagination Controls */}
+            <div className="flex justify-center items-center gap-4 mt-8">
+                <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage <= 1}
+                    className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200
+      ${currentPage <= 1
+                            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                            : "bg-purple-600 text-white hover:bg-purple-700"}
+    `}
+                >
+                    ← Previous
+                </button>
 
-                    return (
+                <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                    Page {currentPage} of {totalPages}
+                </span>
 
-                        <div
-                            key={item._id}
-                            className={`relative p-5 rounded-md border shadow-xl border-gray-500 cursor-pointer transition-all duration-200 hover:shadow-xl hover:translate-y-[-2px] flex flex-col h-full dark:border-white ${isFirst || isLast
-                                ? "border-[2px] border-purple-600 shadow-purple-400"
-                                : "border-gray-300"
-                                }`}
-                            onClick={() => handleJobDescription(item._id)}>
+                <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage >= totalPages}
+                    className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200
+      ${currentPage >= totalPages
+                            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                            : "bg-purple-600 text-white hover:bg-purple-700"}
+    `}
+                >
+                    Next →
+                </button>
+            </div>
 
-                            <Tooltip title={isBookmarked(item._id) ? "Unsave" : "Save"} arrow>
-                                <div
-                                    className="absolute top-3 right-3 z-10 text-xl text-pink-600 hover:scale-110 transition-transform"
-                                    onClick={(e) => toggleBookmark(e, item._id)}
-                                >
-                                    {isBookmarked(item._id) ? <FaHeart /> : <FaRegHeart />}
+
+            {/* Job Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-8 px-8">
+                {loading ? Array.from({ length: limit }).map((_, i) => <SkeletonJobCard key={i} />)
+                    : jobs.length <= 0 ? "No Jobs are available" : jobs.map((item, index) => {
+                        const isFirst = index === 0;
+                        const isLast = index === jobs.length - 1;
+
+                        return (
+
+                            <div
+                                key={item._id}
+                                className={`relative p-5 rounded-md border shadow-xl border-gray-500 cursor-pointer transition-all duration-200 hover:shadow-xl hover:translate-y-[-2px] flex flex-col h-full dark:border-white ${isFirst || isLast
+                                    ? "border-[2px] border-purple-600 shadow-purple-400"
+                                    : "border-gray-300"
+                                    }`}
+                                onClick={() => handleJobDescription(item._id)}>
+
+                                <Tooltip title={isBookmarked(item._id) ? "Unsave" : "Save"} arrow>
+                                    <div
+                                        className="absolute top-3 right-3 z-10 text-xl text-pink-600 hover:scale-110 transition-transform"
+                                        onClick={(e) => toggleBookmark(e, item._id)}
+                                    >
+                                        {isBookmarked(item._id) ? <FaHeart /> : <FaRegHeart />}
+                                    </div>
+                                </Tooltip>
+
+                                {/* Logo and Save Icon */}
+                                <div className="flex items-center gap-4 mb-4">
+                                    <img
+                                        src={item?.company?.logo || item?.companyLogo || "https://via.placeholder.com/40"}
+                                        alt={item?.companyName}
+                                        className="w-12 h-12 rounded-full border object-cover"
+                                    />
+                                    <div>
+                                        <h2 className="text-lg font-semibold">{item?.companyName}</h2>
+                                        <p className="text-sm text-gray-500 dark:text-gray-300">{item?.location}</p>
+                                    </div>
                                 </div>
-                            </Tooltip>
 
-                            {/* Logo and Save Icon */}
-                            <div className="flex items-center gap-4 mb-4">
-                                <img
-                                    src={item?.company?.logo || item?.companyLogo || "https://via.placeholder.com/40"}
-                                    alt={item?.companyName}
-                                    className="w-12 h-12 rounded-full border object-cover"
-                                />
-                                <div>
-                                    <h2 className="text-lg font-semibold">{item?.companyName}</h2>
-                                    <p className="text-sm text-gray-500 dark:text-gray-300">{item?.location}</p>
-                                </div>
-                            </div>
-
-                            {/* Bookmark Icon */}
-                            {/* <Bookmark
+                                {/* Bookmark Icon */}
+                                {/* <Bookmark
                                     size={20}
                                     className="text-gray-400 hover:text-purple-500 transition"
                                     onClick={(e) => {
@@ -96,39 +174,75 @@ function LatestJobCards() {
                                 /> */}
 
 
-                            {/* Role Info */}
-                            <div className="mb-4 ">
-                                <h3 className='text-xl font-bold text-purple-700'>{item?.title}</h3>
-                                <p className='text-sm text-gray-600 dark:text-gray-300'>{truncateText(item?.description, 100)}</p>
-                            </div>
-
-                            {/* Tags */}
-                            <div className='flex flex-wrap gap-2 mb-4'>
-                                <Badge className='bg-blue-100 text-blue-700 font-medium'>{item?.position} position</Badge>
-                                <Badge className='bg-red-100 text-red-600 font-medium'>{item?.jobType}</Badge>
-                                <Badge className='bg-purple-100 text-purple-700 font-medium'>{item?.salary}Lpa</Badge>
-                            </div>
-
-                            {/* Bottom Footer: Posted Date + View Button */}
-                            <div className="mt-auto pt-3 border-t border-gray-200">
-                                <div className="flex justify-between items-center">
-                                    <p className="text-xs text-gray-500 dark:text-gray-300">{getPostedDaysAgo(item?.createdAt)}</p>
-                                    <button
-                                        className="text-sm font-medium text-purple-600 hover:underline"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleJobDescription(item?._id);
-                                        }}
-                                    >
-                                        View Details →
-                                    </button>
+                                {/* Role Info */}
+                                <div className="mb-4 ">
+                                    <h3 className='text-xl font-bold text-purple-700'>{item?.title}</h3>
+                                    <p className='text-sm text-gray-600 dark:text-gray-300'>{truncateText(item?.description, 100)}</p>
                                 </div>
+
+                                {/* Tags */}
+                                <div className='flex flex-wrap gap-2 mb-4'>
+                                    <Badge className='bg-blue-100 text-blue-700 font-medium'>{item?.position} position</Badge>
+                                    <Badge className='bg-red-100 text-red-600 font-medium'>{item?.jobType}</Badge>
+                                    <Badge className='bg-purple-100 text-purple-700 font-medium'>{item?.salary}Lpa</Badge>
+                                </div>
+
+                                {/* Bottom Footer: Posted Date + View Button */}
+                                <div className="mt-auto pt-3 border-t border-gray-200">
+                                    <div className="flex justify-between items-center">
+                                        <p className="text-xs text-gray-500 dark:text-gray-300">{getPostedDaysAgo(item?.createdAt)}</p>
+                                        <button
+                                            className="text-sm font-medium text-purple-600 hover:underline"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleJobDescription(item?._id);
+                                            }}
+                                        >
+                                            View Details →
+                                        </button>
+                                    </div>
+                                </div>
+
+
+
                             </div>
-                        </div>
-                    );
-                })
-            }
-        </div>
+                        );
+                    })
+                }
+            </div>
+
+            {/* Pagination Controls */}
+            <div className="flex justify-center items-center gap-4 mt-8">
+                <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage <= 1}
+                    className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200
+      ${currentPage <= 1
+                            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                            : "bg-purple-600 text-white hover:bg-purple-700"}
+    `}
+                >
+                    ← Previous
+                </button>
+
+                <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                    Page {currentPage} of {totalPages}
+                </span>
+
+                <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage >= totalPages}
+                    className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200
+      ${currentPage >= totalPages
+                            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                            : "bg-purple-600 text-white hover:bg-purple-700"}
+    `}
+                >
+                    Next →
+                </button>
+            </div>
+
+        </>
     );
 }
 

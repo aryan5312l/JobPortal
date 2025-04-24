@@ -4,14 +4,20 @@ import { Search } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { fetchJobs } from "../../redux/actions/jobActions";
 import CategoryCarousel from "./CategoryCarousel";
+import { useNavigate } from "react-router-dom";
 
 
 function HeroSection() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSearch = () => {
-    dispatch(fetchJobs(searchKeyword)); // Fetch filtered jobs
+    if (searchKeyword.trim()) {
+      navigate(`/?keyword=${encodeURIComponent(searchKeyword.trim())}&page=1`);
+    } else {
+      navigate(`/?page=1`);
+    }
   };
   /*
       const handleKeyDown = (event) => {
