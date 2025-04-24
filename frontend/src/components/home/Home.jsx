@@ -17,7 +17,7 @@ function Home() {
     }, [user, navigate]);
   
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f8f5ff] to-white">
+    <div>
         <HeroSection/>
         <CategoryCarousel/>
         <LatestJobs/>

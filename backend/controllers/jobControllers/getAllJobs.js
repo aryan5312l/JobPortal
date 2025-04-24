@@ -4,6 +4,7 @@ import { Job } from "../../models/jobModel.js";
 export const getAllJobs = async(req, res) => {
     try {
         const keyword = req.query.keyword || "";
+        
         const query = {
             $or:[
                 {title : {$regex: keyword, $options: "i"}},

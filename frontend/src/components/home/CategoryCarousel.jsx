@@ -43,35 +43,46 @@ function CategoryCarousel() {
       console.error("Error fetching jobs:", error);
     }
   };
-
   return (
-    <div className="relative py-8 max-w-5xl mx-auto">
-      <h2 className="text-center text-2xl font-bold mb-6">Explore Categories</h2>
+    <div className="relative py-8 max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="text-center mb-8">
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">Explore Categories</h2>
+        <p className="text-gray-600 max-w-2xl mx-auto">Discover our wide range of categories</p>
+      </div>
 
-      <div className="relative">
-        <Carousel>
-          <CarouselContent className="flex -ml-2">
+      <div className="relative group">
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-1">
             {categories.map((cat, index) => (
               <CarouselItem
                 key={index}
-                className="pl-2 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5"
+                className="pl-1 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-[20%] xl:basis-[15%]"
               >
-                <Button
-                  variant={activeCategory === cat ? "default" : "outline"}
-                  className={`w-full whitespace-nowrap rounded-full px-6 py-2 text-sm font-semibold transition-all duration-300 transform hover:scale-105 ${
-                    activeCategory === cat
-                      ? "bg-[#6A38C2] text-white shadow-md"
-                      : "border-gray-300  hover:bg-[#6A38C2] hover:text-white"
-                  }`}
-                  onClick={() => handleCategoryClick(cat)}
-                >
-                  {cat}
-                </Button>
+                <div className="p-1">
+                  <Button
+                    variant={activeCategory === cat ? "default" : "outline"}
+                    className={`w-full whitespace-nowrap rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 
+                      ${activeCategory === cat
+                        ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg hover:shadow-xl"
+                        : "border-gray-200 bg-white hover:bg-gray-50 text-gray-700 hover:text-purple-700 hover:border-purple-300"
+                      }`}
+                    onClick={() => handleCategoryClick(cat)}
+                  >
+                    {cat}
+                  </Button>
+                </div>
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="left-0 -translate-x-full" />
-          <CarouselNext className="right-0 translate-x-full" />
+
+          <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 hover:bg-gray-50 text-gray-700 hover:text-purple-600 transition-all group-hover:opacity-100 opacity-0" />
+          <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 hover:bg-gray-50 text-gray-700 hover:text-purple-600 transition-all group-hover:opacity-100 opacity-0" />
         </Carousel>
       </div>
     </div>

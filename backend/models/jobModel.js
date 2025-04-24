@@ -21,7 +21,7 @@ const jobSchema = new mongoose.Schema({
         required: true
     },
     experienceLevel: {
-        type: Number,
+        type: String,
         required: true
     },
     jobType: {
@@ -29,23 +29,26 @@ const jobSchema = new mongoose.Schema({
         required: true
     },
     position: {
-        type: Number,
+        type: String,
         required: true
     },
     company: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Company',
-        required: true
+        required: false
     },
     created_by: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true
+        required: false
     },
     applications: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Application',
     }],
+    companyLogo: { type: String },
+    companyName: { type: String },
+    jobUrl: { type: String },
     expiresAt: {
         type: Date,
         default: () => new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), // 10 days from now

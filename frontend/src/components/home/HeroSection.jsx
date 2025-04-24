@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { Search } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { fetchJobs } from "../../redux/actions/jobActions";
+import CategoryCarousel from "./CategoryCarousel";
 
 
 function HeroSection() {
@@ -29,7 +30,7 @@ function HeroSection() {
   }, [searchKeyword, dispatch]);
 
   return (
-    <div className="text-center px-4 py-24 max-w-6xl mx-auto rounded-xl ">
+    <div className="mt-24 flex items-center justify-center flex-col text-center px-4 max-w-6xl mx-auto rounded-xl ">
       <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">
         Search, Apply & <br />
         Get Your <span className="text-[#6A38C2]">Dream Job</span>
@@ -52,6 +53,7 @@ function HeroSection() {
           Search
         </Button>
       </div>
+      
     </div>
   );
 }

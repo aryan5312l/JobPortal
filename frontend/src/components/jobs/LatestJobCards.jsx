@@ -74,13 +74,13 @@ function LatestJobCards() {
                             {/* Logo and Save Icon */}
                             <div className="flex items-center gap-4 mb-4">
                                 <img
-                                    src={item.company.logo || "https://via.placeholder.com/40"}
-                                    alt={item.company.name}
+                                    src={item?.company?.logo || item?.companyLogo || "https://via.placeholder.com/40"}
+                                    alt={item?.companyName}
                                     className="w-12 h-12 rounded-full border object-cover"
                                 />
                                 <div>
-                                    <h2 className="text-lg font-semibold">{item.company.name}</h2>
-                                    <p className="text-sm text-gray-500 dark:text-gray-300">{item.location}</p>
+                                    <h2 className="text-lg font-semibold">{item?.companyName}</h2>
+                                    <p className="text-sm text-gray-500 dark:text-gray-300">{item?.location}</p>
                                 </div>
                             </div>
 
@@ -98,26 +98,26 @@ function LatestJobCards() {
 
                             {/* Role Info */}
                             <div className="mb-4 ">
-                                <h3 className='text-xl font-bold text-purple-700'>{item.title}</h3>
-                                <p className='text-sm text-gray-600 dark:text-gray-300'>{truncateText(item.description, 100)}</p>
+                                <h3 className='text-xl font-bold text-purple-700'>{item?.title}</h3>
+                                <p className='text-sm text-gray-600 dark:text-gray-300'>{truncateText(item?.description, 100)}</p>
                             </div>
 
                             {/* Tags */}
                             <div className='flex flex-wrap gap-2 mb-4'>
-                                <Badge className='bg-blue-100 text-blue-700 font-medium'>{item.position} position</Badge>
-                                <Badge className='bg-red-100 text-red-600 font-medium'>{item.jobType}</Badge>
-                                <Badge className='bg-purple-100 text-purple-700 font-medium'>{item.salary}Lpa</Badge>
+                                <Badge className='bg-blue-100 text-blue-700 font-medium'>{item?.position} position</Badge>
+                                <Badge className='bg-red-100 text-red-600 font-medium'>{item?.jobType}</Badge>
+                                <Badge className='bg-purple-100 text-purple-700 font-medium'>{item?.salary}Lpa</Badge>
                             </div>
 
                             {/* Bottom Footer: Posted Date + View Button */}
                             <div className="mt-auto pt-3 border-t border-gray-200">
                                 <div className="flex justify-between items-center">
-                                    <p className="text-xs text-gray-500 dark:text-gray-300">{getPostedDaysAgo(item.createdAt)}</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-300">{getPostedDaysAgo(item?.createdAt)}</p>
                                     <button
                                         className="text-sm font-medium text-purple-600 hover:underline"
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            handleJobDescription(item._id);
+                                            handleJobDescription(item?._id);
                                         }}
                                     >
                                         View Details →
