@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import { Button } from "../ui/button";
 import { setAllJobs } from "@/redux/jobSlice"; // Import Redux action
+import { useLocation, useNavigate } from "react-router-dom";
 
 const categories = [
   "Frontend Developer",
@@ -22,6 +23,8 @@ const categories = [
 
 function CategoryCarousel() {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState(""); // Track active category
 
 
@@ -29,16 +32,9 @@ function CategoryCarousel() {
     const newCategory = activeCategory === category ? "" : category; // Toggle active category
     setActiveCategory(newCategory);
 
-    try {
-      const endpoint = newCategory
-        ? `${import.meta.env.VITE_JOB_API_END_POINT}/get?keyword=${newCategory}`
-        : `${import.meta.env.VITE_JOB_API_END_POINT}/get`; // Fetch all jobs if no category is selected
-
-      const response = await fetch(endpoint);
-      const data = await response.json();
-      if (data.success) {
-        dispatch(setAllJobs(data.jobs));
-      }
+    try{
+      const path = location.pathname;
+      navigate(`${path}?keyword=${encodeURIComponent(newCategory)}&page=1`); // Navigate to the same path with the new category as a query parameter
     } catch (error) {
       console.error("Error fetching jobs:", error);
     }

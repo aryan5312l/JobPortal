@@ -2,7 +2,7 @@
 import { Badge } from "@/components/ui/badge"
 import { useDispatch, useSelector } from 'react-redux';
 import { Bookmark } from "lucide-react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { addBookmark, removeBookmark } from "../../redux/bookmarkSlice";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { Tooltip } from "@mui/material";
@@ -18,6 +18,7 @@ function LatestJobCards() {
     const { bookmarkedJobs } = useSelector(store => store.bookmark);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [loading, setLoading] = useState(true);
 
@@ -32,11 +33,25 @@ function LatestJobCards() {
 
     useEffect(() => {
         setLoading(true);
-
+    
         const delayDebounce = setTimeout(() => {
             const fetchJobs = async () => {
                 try {
-                    const res = await axios.get(`${import.meta.env.VITE_JOB_API_END_POINT}/get?keyword=${encodeURIComponent(keyword)}&page=${currentPage}&limit=${limit}`);
+                    const locationFilters = searchParams.getAll('location');
+                    const industryFilters = searchParams.getAll('industry');
+                    const salaryFilters = searchParams.getAll('salary');
+    
+                    const res = await axios.get(`${import.meta.env.VITE_JOB_API_END_POINT}/get`, {
+                        params: {
+                            keyword,
+                            page: currentPage,
+                            limit,
+                            location: locationFilters,
+                            industry: industryFilters,
+                            salary: salaryFilters
+                        }
+                    });
+    
                     if (res.data.success) {
                         setJobs(res.data.jobs);
                         setTotalPages(res.data.totalPages);
@@ -47,12 +62,13 @@ function LatestJobCards() {
                     setLoading(false);
                 }
             };
-
+    
             fetchJobs();
-        }, 400); // Adjust delay as needed (300-500ms is ideal)
-
-        return () => clearTimeout(delayDebounce); // Cleanup on keyword/page change
-    }, [keyword, currentPage]);
+        }, 400);
+    
+        return () => clearTimeout(delayDebounce);
+    }, [keyword, currentPage, searchParams]);
+    
 
 
     const handleJobDescription = (id) => {
@@ -86,7 +102,8 @@ function LatestJobCards() {
     };
 
     const handlePageChange = (newPage) => {
-        navigate(`/?keyword=${encodeURIComponent(keyword)}&page=${newPage}`);
+        const path = location.pathname;
+        navigate(`${path}?keyword=${encodeURIComponent(keyword)}&page=${newPage}`);
     };
 
     return (

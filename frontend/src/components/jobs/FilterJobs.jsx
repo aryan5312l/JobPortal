@@ -3,6 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { X } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { setFilteredJobs } from '../../redux/jobSlice';
+import { useNavigate, useLocation } from 'react-router-dom'; // added
 
 const filters = {
     Location: [
@@ -11,21 +12,20 @@ const filters = {
         "Patna", "Indore", "Coimbatore", "Agra", "Ahmedabad", "Bhopal", "Chandigarh"
     ],
     Industry: ["Frontend Developer", "Backend Developer", "Fullstack Developer", "Data Scientist", "UI/UX Designer"],
-    SalaryRanges: [
-        "3-6 LPA", "6-10 LPA", "10-15 LPA", "15+ LPA"
-    ]
+    SalaryRanges: ["3-6 LPA", "6-10 LPA", "10-15 LPA", "15+ LPA"]
 };
 
 function FilterJobs({ isOpen, toggleFilter }) {
     const dispatch = useDispatch();
-    
+    const navigate = useNavigate(); // added
+    const location = useLocation(); // added
 
     const [locationSearch, setLocationSearch] = useState('');
     const [industrySearch, setIndustrySearch] = useState('');
     const [selectedFilters, setSelectedFilters] = useState({
         location: [],
         industry: [],
-        salary: [], // Salary range in LPA
+        salary: [],
     });
 
     const handleCheckboxChange = (category, value) => {
@@ -37,10 +37,19 @@ function FilterJobs({ isOpen, toggleFilter }) {
         }));
     };
 
-    // Dispatch filter changes whenever selected filters update
     useEffect(() => {
         dispatch(setFilteredJobs(selectedFilters));
-    }, [selectedFilters, dispatch]);
+
+        const queryParams = new URLSearchParams();
+        selectedFilters.location.forEach(loc => queryParams.append('location', loc));
+        selectedFilters.industry.forEach(ind => queryParams.append('industry', ind));
+        selectedFilters.salary.forEach(sal => queryParams.append('salary', sal));
+
+        navigate({
+            pathname: location.pathname,
+            search: `?${queryParams.toString()}`,
+        });
+    }, [selectedFilters, dispatch, navigate, location.pathname]);
 
     return (
         <div className={`fixed left-0 z-40 h-full w-[70%] bg-white shadow-lg p-4 transform transition-transform duration-500 
@@ -65,8 +74,7 @@ function FilterJobs({ isOpen, toggleFilter }) {
                     />
                 </div>
                 {filters.Location
-                    .filter(loc => loc.toLowerCase().includes(locationSearch.toLowerCase()))
-                    .slice(0, 7) // Show all results when searching
+                    .filter(loc => loc.toLowerCase().includes(locationSearch.toLowerCase())).slice(0, 8)
                     .map((location, idx) => (
                         <div key={idx} className="my-2 flex items-center">
                             <Checkbox
@@ -105,17 +113,15 @@ function FilterJobs({ isOpen, toggleFilter }) {
             {/* Salary Range Filter */}
             <div className="my-4">
                 <h2 className="font-bold text-lg">Salary Range</h2>
-                {filters.SalaryRanges
-
-                    .map((range, idx) => (
-                        <div key={idx} className="my-2 flex items-center">
-                            <Checkbox
-                                checked={selectedFilters.salary.includes(range)}
-                                onCheckedChange={() => handleCheckboxChange('salary', range)}
-                            />
-                            <label className="text-sm font-medium leading-none px-2 text-gray-500">{range}</label>
-                        </div>
-                    ))}
+                {filters.SalaryRanges.map((range, idx) => (
+                    <div key={idx} className="my-2 flex items-center">
+                        <Checkbox
+                            checked={selectedFilters.salary.includes(range)}
+                            onCheckedChange={() => handleCheckboxChange('salary', range)}
+                        />
+                        <label className="text-sm font-medium leading-none px-2 text-gray-500">{range}</label>
+                    </div>
+                ))}
             </div>
         </div>
     );
