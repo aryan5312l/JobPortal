@@ -87,6 +87,7 @@ function LatestJobCards() {
     };
 
     const truncateText = (text, maxLength = 100) => {
+        if(!text) return ""; // Handle null or undefined text
         if (text.length > maxLength) {
             return text.slice(0, maxLength) + "...";
         }
@@ -94,6 +95,7 @@ function LatestJobCards() {
     };
 
     const getPostedDaysAgo = (dateStr) => {
+        if (!dateStr) return ""; // Handle null or undefined dateStr
         const postedDate = new Date(dateStr);
         const today = new Date();
         const diffTime = today - postedDate;
@@ -150,19 +152,19 @@ function LatestJobCards() {
                         return (
 
                             <div
-                                key={item._id}
+                                key={item._id || index}
                                 className={`relative p-5 rounded-md border shadow-xl border-gray-500 cursor-pointer transition-all duration-200 hover:shadow-xl hover:translate-y-[-2px] flex flex-col h-full dark:border-white ${isFirst || isLast
                                     ? "border-[2px] border-purple-600 shadow-purple-400"
                                     : "border-gray-300"
                                     }`}
-                                onClick={() => handleJobDescription(item._id)}>
+                                onClick={() => handleJobDescription(item?._id)}>
 
-                                <Tooltip title={isBookmarked(item._id) ? "Unsave" : "Save"} arrow>
+                                <Tooltip title={isBookmarked(item?._id) ? "Unsave" : "Save"} arrow>
                                     <div
                                         className="absolute top-3 right-3 z-10 text-xl text-pink-600 hover:scale-110 transition-transform"
-                                        onClick={(e) => toggleBookmark(e, item._id)}
+                                        onClick={(e) => toggleBookmark(e, item?._id)}
                                     >
-                                        {isBookmarked(item._id) ? <FaHeart /> : <FaRegHeart />}
+                                        {isBookmarked(item?._id) ? <FaHeart /> : <FaRegHeart />}
                                     </div>
                                 </Tooltip>
 
@@ -170,12 +172,15 @@ function LatestJobCards() {
                                 <div className="flex items-center gap-4 mb-4">
                                     <img
                                         src={item?.company?.logo || item?.companyLogo || "https://via.placeholder.com/40"}
-                                        alt={item?.companyName}
+                                        alt={item?.companyName || "Company Logo"}
                                         className="w-12 h-12 rounded-full border object-cover"
+                                        onError={(e) => {
+                                            e.target.src = "https://via.placeholder.com/40";
+                                        }}
                                     />
                                     <div>
-                                        <h2 className="text-lg font-semibold">{item?.companyName}</h2>
-                                        <p className="text-sm text-gray-500 dark:text-gray-300">{item?.location}</p>
+                                        <h2 className="text-lg font-semibold">{item?.companyName || "Unknow Company"}</h2>
+                                        <p className="text-sm text-gray-500 dark:text-gray-300">{item?.location || "Location not specified"}</p>
                                     </div>
                                 </div>
 
@@ -193,15 +198,15 @@ function LatestJobCards() {
 
                                 {/* Role Info */}
                                 <div className="mb-4 ">
-                                    <h3 className='text-xl font-bold text-purple-700'>{item?.title}</h3>
+                                    <h3 className='text-xl font-bold text-purple-700'>{item?.title || "Job Title"}</h3>
                                     <p className='text-sm text-gray-600 dark:text-gray-300'>{truncateText(item?.description, 100)}</p>
                                 </div>
 
                                 {/* Tags */}
                                 <div className='flex flex-wrap gap-2 mb-4'>
-                                    <Badge className='bg-blue-100 text-blue-700 font-medium'>{item?.position} position</Badge>
-                                    <Badge className='bg-red-100 text-red-600 font-medium'>{item?.jobType}</Badge>
-                                    <Badge className='bg-purple-100 text-purple-700 font-medium'>{item?.salary}Lpa</Badge>
+                                    <Badge className='bg-blue-100 text-blue-700 font-medium'>{item?.position || "Position"} position</Badge>
+                                    <Badge className='bg-red-100 text-red-600 font-medium'>{item?.jobType || "Job Type"}</Badge>
+                                    <Badge className='bg-purple-100 text-purple-700 font-medium'>{item?.salary || "Salary"}Lpa</Badge>
                                 </div>
 
                                 {/* Bottom Footer: Posted Date + View Button */}
