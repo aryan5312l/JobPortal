@@ -15,19 +15,19 @@ const jobSlice = createSlice({
             const { jobId, applicationId } = action.payload;
             const job = state.allJobs.find(job => job._id === jobId);
             if (job && !job.applications.includes(applicationId)) {
-                job.applications.push(applicationId); 
+                job.applications.push(applicationId);
             }
         },
         filterJobs: (state, action) => {
             const keyword = action.payload.toLowerCase();
             state.filteredJobs = state.allJobs.filter(job =>
                 job.title.toLowerCase().includes(keyword) ||
-                job.description.toLowerCase().includes(keyword) || 
+                job.description.toLowerCase().includes(keyword) ||
                 job.jobType.toLowerCase().includes(keyword) ||
                 job.company.name.toLowerCase().includes(keyword)
             );
         },
-        setFilteredJobs: (state, action) => { 
+        setFilteredJobs: (state, action) => {
             const { location, industry, salary } = action.payload;
 
             const salaryRanges = {
@@ -41,7 +41,10 @@ const jobSlice = createSlice({
                 const locationMatch = location.length === 0 || location.includes(job.location);
                 const industryMatch = industry.length === 0 || industry.includes(job.title);
                 const salaryMatch = salary.length === 0 || salary.some(range => {
+                    const rangeValues = salaryRanges[range];
+                    if (!rangeValues) return false;
                     const [min, max] = salaryRanges[range];
+
                     return job.salary >= min && job.salary <= max;
                 });
 
