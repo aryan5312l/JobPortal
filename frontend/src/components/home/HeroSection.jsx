@@ -36,7 +36,7 @@ function HeroSection() {
   }, [searchKeyword, dispatch]);
 
   return (
-    <div className="mt-24 flex items-center justify-center flex-col text-center px-4 max-w-6xl mx-auto rounded-xl ">
+    <div className="mt-20 flex items-center justify-center flex-col text-center px-4 max-w-6xl mx-auto rounded-xl ">
       <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">
         Search, Apply & <br />
         Get Your <span className="text-[#6A38C2]">Dream Job</span>
@@ -50,6 +50,11 @@ function HeroSection() {
           className="w-full px-4 py-2 rounded-full sm:rounded-l-full sm:rounded-r-none border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 shadow-sm text-sm transition"
           value={searchKeyword}
           //onKeyDown={handleKeyDown}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSearch();
+            }
+          }}
           onChange={(e) => setSearchKeyword(e.target.value)}
         />
         <Button

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Carousel,
   CarouselContent,
@@ -8,80 +8,89 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Button } from "../ui/button";
-import { setAllJobs } from "@/redux/jobSlice"; // Import Redux action
-import { useLocation, useNavigate } from "react-router-dom";
 
 const categories = [
-  "Frontend Developer",
-  "Backend Developer",
+  "Frontend",
+  "Backend",
   "Data Science",
-  "Graphic Designer",
-  "FullStack Developer",
-  "UI/UX Designer",
-  "Full",
+  "Design",
+  "Full Stack",
+  "DevOps",
+  "Mobile",
+  "QA",
+  "Product",
+  "Marketing",
 ];
 
 function CategoryCarousel() {
-  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const [activeCategory, setActiveCategory] = useState(""); // Track active category
+  const [activeCategory, setActiveCategory] = useState("");
 
-
-  const handleCategoryClick = async (category) => {
-    const newCategory = activeCategory === category ? "" : category; // Toggle active category
+  const handleCategoryClick = (category) => {
+    const newCategory = activeCategory === category ? "" : category;
     setActiveCategory(newCategory);
-
-    try{
-      const path = location.pathname;
-      navigate(`${path}?keyword=${encodeURIComponent(newCategory)}&page=1`); // Navigate to the same path with the new category as a query parameter
-    } catch (error) {
-      console.error("Error fetching jobs:", error);
+    
+    const searchParams = new URLSearchParams(location.search);
+    if (newCategory) {
+      searchParams.set("keyword", newCategory);
+      searchParams.set("page", "1");
+    } else {
+      searchParams.delete("keyword");
     }
+    navigate(`${location.pathname}?${searchParams.toString()}`);
   };
+
   return (
-    <div className="relative py-8 max-w-7xl mx-auto px-4 sm:px-6">
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">Explore Categories</h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">Discover our wide range of categories</p>
-      </div>
+    <section className="w-full py-8 md:py-12 max-w-7xl mx-auto">
+      <div className="container px-4 md:px-6">
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+            Browse by Category
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Find your perfect job in these popular categories
+          </p>
+        </div>
 
-      <div className="relative group">
-        <Carousel
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-          className="w-full"
-        >
-          <CarouselContent className="-ml-1">
-            {categories.map((cat, index) => (
-              <CarouselItem
-                key={index}
-                className="pl-1 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-[20%] xl:basis-[15%]"
-              >
-                <div className="p-1">
-                  <Button
-                    variant={activeCategory === cat ? "default" : "outline"}
-                    className={`w-full whitespace-nowrap rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 
-                      ${activeCategory === cat
-                        ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg hover:shadow-xl"
-                        : "border-gray-200 bg-white hover:bg-gray-50 text-gray-700 hover:text-purple-700 hover:border-purple-300"
+        <div className="relative">
+          <Carousel
+            opts={{
+              align: "start",
+              loop: false,
+              dragFree: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-1">
+              {categories.map((category, index) => (
+                <CarouselItem
+                  key={index}
+                  className="pl-1 basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6"
+                >
+                  <div className="p-1">
+                    <Button
+                      variant={activeCategory === category ? "default" : "outline"}
+                      className={`w-full rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                        activeCategory === category
+                          ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md hover:shadow-lg"
+                          : "border-gray-200 bg-white hover:bg-gray-50 text-gray-700 hover:text-blue-600 hover:border-blue-200"
                       }`}
-                    onClick={() => handleCategoryClick(cat)}
-                  >
-                    {cat}
-                  </Button>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-
-          <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 hover:bg-gray-50 text-gray-700 hover:text-purple-600 transition-all group-hover:opacity-100 opacity-0" />
-          <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-md border border-gray-200 hover:bg-gray-50 text-gray-700 hover:text-purple-600 transition-all group-hover:opacity-100 opacity-0" />
-        </Carousel>
+                      onClick={() => handleCategoryClick(category)}
+                    >
+                      {category}
+                    </Button>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            
+            <CarouselPrevious className="absolute -left-4 top-1/2 -translate-y-1/2 hidden sm:flex w-8 h-8 rounded-full bg-white shadow-sm border border-gray-200 hover:bg-gray-50 text-gray-700 hover:text-blue-600" />
+            <CarouselNext className="absolute -right-4 top-1/2 -translate-y-1/2 hidden sm:flex w-8 h-8 rounded-full bg-white shadow-sm border border-gray-200 hover:bg-gray-50 text-gray-700 hover:text-blue-600" />
+          </Carousel>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 
