@@ -42,13 +42,14 @@ app.get('/', (req, res) => {
     res.status(200).send("Hello");
 })
 */
-app.use((req, res, next) => {
-    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-    console.log("Headers:", req.headers);
-    console.log("Body:", req.body);
-    next();
-});
+// app.use((req, res, next) => {
+//     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+//     console.log("Headers:", req.headers);
+//     console.log("Body:", req.body);
+//     next();
+// });
 
+import './cron/fetchJobCron.js'
 
 //api's
 app.use("/api/v1/user", userRouter);
