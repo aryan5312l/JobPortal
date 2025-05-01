@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { 
-  User, LogOut, Menu, X, Bell, Search, Loader2, Sun, Moon 
+import {
+  User, LogOut, Menu, X, Bell, Search, Loader2, Sun, Moon,
+  Bookmark
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -12,28 +13,73 @@ import axios from 'axios';
 import { setUser } from '../../redux/authSlice';
 import { setAllJobs } from '../../redux/jobSlice';
 import { useToast } from "@/hooks/use-toast";
+import { Skeleton } from '@mui/material';
+import { fetchBookmarkedJobs } from '../../redux/actions/bookmarkActions';
 
-const UserProfileDropdown = ({ user, logoutHandler, isLoggingOut }) => (
+const UserProfileDropdown = ({ user, logoutHandler, isLoggingOut, bookmarks, isFetchingBookmarks }) => (
   <Popover>
     <PopoverTrigger>
       <Avatar>
-        <AvatarImage src={user?.profile?.profilePhoto} />
-        <AvatarFallback>{user?.fullname?.charAt(0)}</AvatarFallback>
+        <AvatarImage src={user?.profile?.profilePhoto || ""} />
+        <AvatarFallback>{user?.fullname?.charAt(0) || "U"}</AvatarFallback>
       </Avatar>
     </PopoverTrigger>
-    <PopoverContent className="w-60">
+    <PopoverContent className="w-72">
       <div className="flex gap-4">
         <Avatar>
-          <AvatarImage src={user?.profile?.profilePhoto} />
-          <AvatarFallback>{user?.fullname?.charAt(0)}</AvatarFallback>
+          <AvatarImage src={user?.profile?.profilePhoto || ""} />
+          <AvatarFallback>{user?.fullname?.charAt(0) || "u"}</AvatarFallback>
         </Avatar>
         <div>
-          <h4 className="font-medium">{user.fullname}</h4>
+          <h4 className="font-medium">{user?.fullname || "NO USER"}</h4>
           <p className="text-sm text-muted-foreground">
-            {user?.profile?.bio}
+            {user?.profile?.bio || "Member since " + new Date(user.createdAt).toLocaleDateString()}
           </p>
         </div>
       </div>
+
+      {/* Bookmarks Section */}
+      <div className="mt-4 border-t pt-3">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="font-medium flex items-center gap-2">
+            <Bookmark className="h-4 w-4 text-purple-600" />
+            Saved Jobs
+          </h3>
+          <Link to="/bookmarks" className="text-xs text-purple-600 hover:underline">
+            View All
+          </Link>
+        </div>
+        
+        {isFetchingBookmarks ? (
+          <div className="space-y-2">
+            {[1, 2, 3].map((i) => (
+              <Skeleton key={i} className="h-10 w-full" />
+            ))}
+          </div>
+        ) : bookmarks?.length > 0 ? (
+          <div className="space-y-2 max-h-60 overflow-y-auto">
+            {bookmarks.slice(0, 3).map((job) => (
+              
+              <Link
+                key={job._id}
+                to={`/jobdescription/${job?._id}`}
+                className="block p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+              >
+                <p className="font-medium text-sm truncate">{job?.title || "no title"}</p>
+                <p className="text-xs text-muted-foreground truncate">{job?.companyName || "no company name"}</p>
+              </Link>
+            ))}
+            {bookmarks?.length > 3 && (
+              <div className="text-center text-xs text-muted-foreground pt-1">
+                +{bookmarks?.length - 3} more
+              </div>
+            )}
+          </div>
+        ) : (
+          <p className="text-sm text-muted-foreground py-2">No saved jobs yet</p>
+        )}
+      </div>
+
       <div className="mt-4 space-y-2">
         <Link to='/profile'>
           <Button variant="ghost" className="w-full justify-start gap-2">
@@ -62,32 +108,50 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  
+  const [isFetchingBookmarks, setIsFetchingBookmarks] = useState(false);
+  const { bookmarkedJobs } = useSelector(store => store.bookmark);
+
   const { user } = useSelector(store => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { toast } = useToast();
   const location = useLocation();
 
+  useEffect(() => {
+    if (user?._id) {
+      const fetchBookmarks = async () => {
+        setIsFetchingBookmarks(true);
+        try {
+          await dispatch(fetchBookmarkedJobs());
+          setIsFetchingBookmarks(false);
+        } catch (error) {
+          console.error("Error fetching bookmarks:", error);
+          setIsFetchingBookmarks(false);
+        }
+      };
+      fetchBookmarks();
+    }
+  }, [user?._id, dispatch]);
+
   const logoutHandler = async () => {
-  
+
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_USER_API_END_POINT}/logout`, 
+        `${import.meta.env.VITE_USER_API_END_POINT}/logout`,
         { withCredentials: true }
       );
-      
+
       if (res.data.success) {
         // Clear user data from state
         dispatch(setUser(null));
         dispatch(setAllJobs([]));
-        
+
         // Show success notification
         toast({
           title: res.data.message,
           className: "bg-green-500 text-white"
         });
-        
+
         // Redirect to home page
         navigate('/');
       }
@@ -123,26 +187,23 @@ const Navbar = () => {
   const NavLink = ({ to, children }) => (
     <Link
       to={to}
-      className={`relative px-3 py-2 text-sm font-medium transition-colors ${
-        location.pathname === to 
+      className={`relative px-3 py-2 text-sm font-medium transition-colors ${location.pathname === to
           ? 'text-[#6A38C2] font-semibold'
           : 'text-gray-600 hover:text-[#6A38C2]'
-      } group`}
+        } group`}
     >
       {children}
-      <span className={`absolute bottom-0 left-0 h-0.5 ${
-        location.pathname === to ? 'w-full' : 'w-0'
-      } bg-[#6A38C2] transition-all duration-300 group-hover:w-full`}></span>
+      <span className={`absolute bottom-0 left-0 h-0.5 ${location.pathname === to ? 'w-full' : 'w-0'
+        } bg-[#6A38C2] transition-all duration-300 group-hover:w-full`}></span>
     </Link>
   );
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-      scrolled ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-md' : 'bg-white dark:bg-gray-900'
-    }`}>
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-md' : 'bg-white dark:bg-gray-900'
+      }`}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          
+
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <h1 className="text-2xl font-bold">
@@ -195,10 +256,12 @@ const Navbar = () => {
               {/* User Profile */}
               {user ? (
                 <UserProfileDropdown 
-                  user={user} 
-                  logoutHandler={logoutHandler}
-                  isLoggingOut={isLoggingOut}
-                />
+                user={user} 
+                logoutHandler={logoutHandler}
+                isLoggingOut={isLoggingOut}
+                bookmarks={bookmarkedJobs || []}
+                isFetchingBookmarks={isFetchingBookmarks}
+              />
               ) : (
                 <div className="flex items-center gap-2 ml-2">
                   <Link to="/login">
@@ -247,7 +310,7 @@ const Navbar = () => {
                 placeholder="Search..."
                 className="w-full pl-10 pr-4 py-2 rounded-full bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-[#6A38C2]"
               />
-              
+
               <div className="flex flex-col space-y-2">
                 <NavLink to="/">Home</NavLink>
                 <NavLink to="/jobs">Jobs</NavLink>

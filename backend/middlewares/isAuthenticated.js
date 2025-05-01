@@ -6,6 +6,7 @@ const isAuthenticated = async(req, res, next) => {
         //console.log("All headers:", req.headers);
         //console.log("Received cookies:", req.cookies);
         //console.log("Received token:", token);
+        //console.log("isAuthenticated called");
         if(!token){
             return res.status(401).json({
                 message: "User not authenticated",
@@ -22,7 +23,7 @@ const isAuthenticated = async(req, res, next) => {
         };
 
         req.id = decode.userId;
-        
+        //console.log("User ID from token:", req.id);
         next();
 
     }catch(error){

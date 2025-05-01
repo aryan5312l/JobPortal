@@ -7,6 +7,7 @@ import userRouter from "./routes/userRoute.js";
 import companyRouter from "./routes/companyRoute.js"
 import jobRouter from './routes/jobRoute.js'
 import applicationRouter from "./routes/applicationRoute.js"
+import bookmarkRouter from "./routes/bookmarkRoute.js"
 import path from "path";
 import session from "express-session";
 import passport from "passport";
@@ -54,6 +55,7 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/company", companyRouter);
 app.use("/api/v1/job", jobRouter);
 app.use("/api/v1/application", applicationRouter);
+app.use("/api/v1/bookmark", bookmarkRouter);
 
 app.use(express.static(path.join(__dirname, "/frontend/dist")));
 app.get("*", (req, res) => {

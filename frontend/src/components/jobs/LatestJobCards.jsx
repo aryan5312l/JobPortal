@@ -1,9 +1,9 @@
 
 import { Badge } from "@/components/ui/badge"
 import { useDispatch, useSelector } from 'react-redux';
-import { Bookmark } from "lucide-react";
+
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { addBookmark, removeBookmark } from "../../redux/bookmarkSlice";
+import { addBookmark, fetchBookmarkedJobs, removeBookmark } from "../../redux/actions/bookmarkActions";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { Tooltip } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -14,6 +14,7 @@ import { SkeletonJobCard } from "./SkeletonJobCard";
 //const random = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
 
 function LatestJobCards() {
+    const { user } = useSelector(store => store.auth);
     //const { filteredJobs } = useSelector(store => store.job);
     const { bookmarkedJobs } = useSelector(store => store.bookmark);
     const dispatch = useDispatch();
@@ -32,15 +33,22 @@ function LatestJobCards() {
     const limit = 9;
 
     useEffect(() => {
+        // Fetch bookmarks when component mounts or user changes
+        if (user) {
+          dispatch(fetchBookmarkedJobs());
+        }
+      }, [dispatch, user]);
+
+    useEffect(() => {
         setLoading(true);
-    
+
         const delayDebounce = setTimeout(() => {
             const fetchJobs = async () => {
                 try {
                     const locationFilters = searchParams.getAll('location');
                     const industryFilters = searchParams.getAll('industry');
                     const salaryFilters = searchParams.getAll('salary');
-    
+
                     const res = await axios.get(`${import.meta.env.VITE_JOB_API_END_POINT}/get`, {
                         params: {
                             keyword,
@@ -51,7 +59,7 @@ function LatestJobCards() {
                             salary: salaryFilters
                         }
                     });
-    
+
                     if (res.data.success) {
                         setJobs(res.data.jobs);
                         setTotalPages(res.data.totalPages);
@@ -62,32 +70,75 @@ function LatestJobCards() {
                     setLoading(false);
                 }
             };
-    
+
             fetchJobs();
         }, 400);
-    
+
         return () => clearTimeout(delayDebounce);
     }, [keyword, currentPage, searchParams]);
-    
+
 
 
     const handleJobDescription = (id) => {
         navigate(`/jobdescription/${id}`);
     }
 
-    const isBookmarked = (id) => bookmarkedJobs.includes(id);
+    const isBookmarked = (id) => {
+        return bookmarkedJobs?.some(job => job._id === id) || false;
+    };
 
-    const toggleBookmark = (e, id) => {
-        e.stopPropagation(); // Prevent triggering the job card click event
-        if (isBookmarked(id)) {
-            dispatch(removeBookmark(id));
-        } else {
-            dispatch(addBookmark(id));
+    const toggleBookmark = async (e, id) => {
+        e.stopPropagation();
+        try {
+            if(!user) {
+                navigate("/login");
+                return;
+            }
+            if (isBookmarked(id)) {
+                await dispatch(removeBookmark(id));
+            } else {
+                await dispatch(addBookmark(id));
+            }
+            // Refresh bookmarks after change
+            dispatch(fetchBookmarkedJobs());
+        } catch (error) {
+            console.error("Bookmark toggle failed:", error);
         }
     };
 
+    useEffect(() => {
+        if (!user) return;
+
+        const fetchBookmarks = async () => {
+            try {
+                setLoading(true);
+                const res = await axios.get(`${import.meta.env.VITE_BOOKMARK_API_END_POINT}`, {
+                    withCredentials: true
+                });
+
+                if (res.data.success) {
+                    // Assuming backend returns { success: true, bookmarks: [...] }
+                    const { bookmarks } = res.data;
+                    console.log("Bookmarked jobs fetched successfully:", bookmarks);
+
+                    // Dispatch to Redux - adjust based on your actual backend response
+                    const jobIds = bookmarks.map(b => b.jobId?._id || b.jobId);
+                    dispatch(fetchBookmarkedJobs.fulfilled(jobIds));
+                }
+            } catch (error) {
+                console.error("Failed to fetch bookmarked jobs", error);
+                dispatch(fetchBookmarkedJobs.rejected(error));
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchBookmarks();
+    }, [user, dispatch]);
+
+
     const truncateText = (text, maxLength = 100) => {
-        if(!text) return ""; // Handle null or undefined text
+        if (!text) return ""; // Handle null or undefined text
         if (text.length > maxLength) {
             return text.slice(0, maxLength) + "...";
         }

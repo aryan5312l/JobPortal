@@ -22,6 +22,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute'
 import GoogleCallback from './components/auth/GoogleCallback'
 import ForgotPassword from './components/auth/ForgotPassword'
 import ResetPassword from './components/auth/ResetPassword'
+import BookmarksPage from './components/jobs/BookmarksPage'
 
 
 function App() {
@@ -77,6 +78,10 @@ function App() {
         {
           path: '/profile',
           element: <Profile /> 
+        },
+        {
+          path: '/bookmarks',
+          element: <BookmarksPage/>
         },
 
         // Recruiter Protected Routes
