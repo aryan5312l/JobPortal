@@ -25,8 +25,17 @@ export const getAllJobs = async (req, res) => {
 
         // Location filter
         if (locationFilters.length > 0) {
+            const locations = Array.isArray(locationFilters) ? locationFilters : [locationFilters];
+            
+            const locationConditions = locations.map(location => ({
+                location: { 
+                    $regex: location.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 
+                    $options: "i" 
+                }
+            }));
+
             query.$and.push({
-                location: { $in: Array.isArray(locationFilters) ? locationFilters : [locationFilters] }
+                $or: locationConditions
             });
         }
 
