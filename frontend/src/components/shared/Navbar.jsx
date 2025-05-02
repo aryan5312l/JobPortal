@@ -15,6 +15,9 @@ import { setAllJobs } from '../../redux/jobSlice';
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from '@mui/material';
 import { fetchBookmarkedJobs } from '../../redux/actions/bookmarkActions';
+import DarkModeToggle from '../utils/DarkModeToggle';
+import { useDarkMode } from '../../contexts/DarkModeContext';
+
 
 const UserProfileDropdown = ({ user, logoutHandler, isLoggingOut, bookmarks, isFetchingBookmarks }) => (
   <Popover>
@@ -49,7 +52,7 @@ const UserProfileDropdown = ({ user, logoutHandler, isLoggingOut, bookmarks, isF
             View All
           </Link>
         </div>
-        
+
         {isFetchingBookmarks ? (
           <div className="space-y-2">
             {[1, 2, 3].map((i) => (
@@ -59,7 +62,7 @@ const UserProfileDropdown = ({ user, logoutHandler, isLoggingOut, bookmarks, isF
         ) : bookmarks?.length > 0 ? (
           <div className="space-y-2 max-h-60 overflow-y-auto">
             {bookmarks.slice(0, 3).map((job) => (
-              
+
               <Link
                 key={job._id}
                 to={`/jobdescription/${job?._id}`}
@@ -104,9 +107,11 @@ const UserProfileDropdown = ({ user, logoutHandler, isLoggingOut, bookmarks, isF
 
 
 const Navbar = () => {
+  const {darkMode} = useDarkMode();
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isFetchingBookmarks, setIsFetchingBookmarks] = useState(false);
   const { bookmarkedJobs } = useSelector(store => store.bookmark);
@@ -164,13 +169,7 @@ const Navbar = () => {
     }
   };
 
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [darkMode]);
+  
 
   // Scroll effect
   useEffect(() => {
@@ -188,8 +187,8 @@ const Navbar = () => {
     <Link
       to={to}
       className={`relative px-3 py-2 text-sm font-medium transition-colors ${location.pathname === to
-          ? 'text-[#6A38C2] font-semibold'
-          : 'text-gray-600 hover:text-[#6A38C2]'
+        ? 'text-[#6A38C2] font-semibold'
+        : 'text-gray-600 hover:text-[#6A38C2]'
         } group`}
     >
       {children}
@@ -199,119 +198,22 @@ const Navbar = () => {
   );
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-md' : 'bg-white dark:bg-gray-900'
-      }`}>
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+    <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} transition-colors duration-300`}>
+      <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-md' : 'bg-white dark:bg-gray-900'
+        }`}>
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between">
 
-          {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <h1 className="text-2xl font-bold">
-              Job<span className="text-[#F83002]">Portal</span>
-            </h1>
-          </Link>
+            {/* Logo */}
+            <Link to="/" className="flex items-center">
+              <h1 className="text-2xl font-bold ">
+                <span className='dark:text-white'>Job</span><span className="text-[#F83002]">Portal</span>
+              </h1>
+            </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-6">
-            <div className="flex items-center gap-1">
-              <NavLink to="/">Home</NavLink>
-              <NavLink to="/jobs">Jobs</NavLink>
-              {user?.role === 'recruiter' && (
-                <>
-                  <NavLink to="/recruiter/companies">Companies</NavLink>
-                  <NavLink to="/recruiter/jobs">Post Job</NavLink>
-                </>
-              )}
-            </div>
-
-            <div className="flex items-center gap-4 ml-4">
-              {/* Search */}
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                <input
-                  type="search"
-                  placeholder="Search..."
-                  className="pl-10 pr-4 py-2 rounded-full bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-[#6A38C2] w-40 sm:w-56"
-                />
-              </div>
-
-              {/* Dark Mode */}
-              <button
-                onClick={() => setDarkMode(!darkMode)}
-                className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
-              >
-                {darkMode ? (
-                  <Sun className="h-5 w-5 text-yellow-400" />
-                ) : (
-                  <Moon className="h-5 w-5 text-gray-600" />
-                )}
-              </button>
-
-              {/* Notifications */}
-              <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 relative">
-                <Bell className="h-5 w-5 text-gray-600 dark:text-gray-300" />
-                <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500"></span>
-              </button>
-
-              {/* User Profile */}
-              {user ? (
-                <UserProfileDropdown 
-                user={user} 
-                logoutHandler={logoutHandler}
-                isLoggingOut={isLoggingOut}
-                bookmarks={bookmarkedJobs || []}
-                isFetchingBookmarks={isFetchingBookmarks}
-              />
-              ) : (
-                <div className="flex items-center gap-2 ml-2">
-                  <Link to="/login">
-                    <Button variant="outline">Login</Button>
-                  </Link>
-                  <Link to="/signup">
-                    <Button className="bg-[#6A38C2] hover:bg-[#5b30a6]">
-                      Signup
-                    </Button>
-                  </Link>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center gap-2">
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#6A38C2]"
-              aria-expanded={menuOpen}
-            >
-              {menuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden bg-white dark:bg-gray-900 shadow-lg overflow-hidden"
-          >
-            <div className="px-4 py-3 space-y-4">
-              <input
-                type="search"
-                placeholder="Search..."
-                className="w-full pl-10 pr-4 py-2 rounded-full bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-[#6A38C2]"
-              />
-
-              <div className="flex flex-col space-y-2">
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-6">
+              <div className="flex items-center gap-1">
                 <NavLink to="/">Home</NavLink>
                 <NavLink to="/jobs">Jobs</NavLink>
                 {user?.role === 'recruiter' && (
@@ -322,69 +224,159 @@ const Navbar = () => {
                 )}
               </div>
 
-              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="flex items-center gap-4 ml-4">
+                {/* Search */}
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <input
+                    type="search"
+                    placeholder="Search..."
+                    className="pl-10 pr-4 py-2 rounded-full bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-[#6A38C2] w-40 sm:w-56"
+                  />
+                </div>
+
+                {/* Dark Mode */}
+                <DarkModeToggle />
+
+                {/* Notifications */}
+                <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 relative">
+                  <Bell className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+                  <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500"></span>
+                </button>
+
+                {/* User Profile */}
                 {user ? (
-                  <div className="flex flex-col space-y-3">
-                    <Link
-                      to="/profile"
-                      className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
-                    >
-                      <Avatar>
-                        <AvatarImage src={user?.profile?.profilePhoto} />
-                        <AvatarFallback>{user?.fullname?.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="font-medium">{user.fullname}</p>
-                        <p className="text-sm text-gray-500">View Profile</p>
-                      </div>
-                    </Link>
-                    <button
-                      onClick={() => setDarkMode(!darkMode)}
-                      className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 w-full"
-                    >
-                      {darkMode ? (
-                        <>
-                          <Sun className="h-5 w-5 text-yellow-400" />
-                          <span>Light Mode</span>
-                        </>
-                      ) : (
-                        <>
-                          <Moon className="h-5 w-5 text-gray-600" />
-                          <span>Dark Mode</span>
-                        </>
-                      )}
-                    </button>
-                    <button
-                      onClick={logoutHandler}
-                      disabled={isLoggingOut}
-                      className="flex items-center gap-3 p-2 rounded-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 w-full"
-                    >
-                      <LogOut className="h-5 w-5" />
-                      {isLoggingOut ? "Logging out..." : "Logout"}
-                    </button>
-                  </div>
+                  <UserProfileDropdown
+                    user={user}
+                    logoutHandler={logoutHandler}
+                    isLoggingOut={isLoggingOut}
+                    bookmarks={bookmarkedJobs || []}
+                    isFetchingBookmarks={isFetchingBookmarks}
+                  />
                 ) : (
-                  <div className="flex flex-col gap-2">
-                    <Link
-                      to="/login"
-                      className="w-full py-2 px-4 border rounded-md text-center hover:bg-gray-50"
-                    >
-                      Login
+                  <div className="flex items-center gap-2 ml-2">
+                    <Link to="/login">
+                      <Button variant="outline" className="dark:text-white">Login</Button>
                     </Link>
-                    <Link
-                      to="/signup"
-                      className="w-full py-2 px-4 bg-[#6A38C2] text-white rounded-md text-center hover:bg-[#5b30a6]"
-                    >
-                      Signup
+                    <Link to="/signup">
+                      <Button className="bg-[#6A38C2] dark:text-white hover:bg-[#5b30a6]">
+                        Signup
+                      </Button>
                     </Link>
                   </div>
                 )}
               </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden flex items-center gap-2">
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className="p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[#6A38C2]"
+                aria-expanded={menuOpen}
+              >
+                {menuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.2 }}
+              className="md:hidden bg-white dark:bg-gray-900 shadow-lg overflow-hidden"
+            >
+              <div className="px-4 py-3 space-y-4">
+                <input
+                  type="search"
+                  placeholder="Search..."
+                  className="w-full pl-10 pr-4 py-2 rounded-full bg-gray-50 dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-[#6A38C2]"
+                />
+
+                <div className="flex flex-col space-y-2">
+                  <NavLink to="/">Home</NavLink>
+                  <NavLink to="/jobs">Jobs</NavLink>
+                  {user?.role === 'recruiter' && (
+                    <>
+                      <NavLink to="/recruiter/companies">Companies</NavLink>
+                      <NavLink to="/recruiter/jobs">Post Job</NavLink>
+                    </>
+                  )}
+                </div>
+
+                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                  {user ? (
+                    <div className="flex flex-col space-y-3">
+                      <Link
+                        to="/profile"
+                        className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                      >
+                        <Avatar>
+                          <AvatarImage src={user?.profile?.profilePhoto} />
+                          <AvatarFallback>{user?.fullname?.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium">{user.fullname}</p>
+                          <p className="text-sm text-gray-500">View Profile</p>
+                        </div>
+                      </Link>
+                      <button
+                        onClick={() => setDarkMode(!darkMode)}
+                        className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 w-full"
+                      >
+                        {darkMode ? (
+                          <>
+                            <Sun className="h-5 w-5 text-yellow-400" />
+                            <span>Light Mode</span>
+                          </>
+                        ) : (
+                          <>
+                            <Moon className="h-5 w-5 text-gray-600" />
+                            <span>Dark Mode</span>
+                          </>
+                        )}
+                      </button>
+                      <button
+                        onClick={logoutHandler}
+                        disabled={isLoggingOut}
+                        className="flex items-center gap-3 p-2 rounded-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 w-full"
+                      >
+                        <LogOut className="h-5 w-5" />
+                        {isLoggingOut ? "Logging out..." : "Logout"}
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-2">
+                      <Link
+                        to="/login"
+                        className="w-full py-2 px-4 border rounded-md text-center hover:bg-gray-50"
+                      >
+                        Login
+                      </Link>
+                      <Link
+                        to="/signup"
+                        className="w-full py-2 px-4 bg-[#6A38C2] text-white rounded-md text-center hover:bg-[#5b30a6]"
+                      >
+                        Signup
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+    </div>
   );
 };
 

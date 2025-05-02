@@ -139,7 +139,7 @@ function Signup() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-4">
+        <div className="min-h-screen flex items-center justify-center p-4">
             <div className="w-full max-w-md">
                 {/* Signup Card */}
                 <div className="bg-white rounded-xl shadow-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
@@ -234,17 +234,17 @@ function Signup() {
                                     <Label className="block text-sm font-medium text-gray-700">
                                         I am a:
                                     </Label>
-                                    <RadioGroup 
-                                        defaultValue="student" 
-                                        className="flex gap-4"
-                                        onValueChange={(value) => setInput({...input, role: value})}
+                                    <RadioGroup
+                                        defaultValue="student"
+                                        className="flex gap-4 text-gray-700 "
+                                        onValueChange={(value) => setInput({ ...input, role: value })}
                                     >
-                                        <div className="flex items-center space-x-2">
-                                            <RadioGroupItem value="student" id="student" />
+                                        <div className="flex items-center space-x-2 ">
+                                            <RadioGroupItem value="student" id="student" className="dark:bg-gray-700"/>
                                             <Label htmlFor="student">Student</Label>
                                         </div>
                                         <div className="flex items-center space-x-2">
-                                            <RadioGroupItem value="recruiter" id="recruiter" />
+                                            <RadioGroupItem value="recruiter" id="recruiter" className="dark:bg-gray-700"/>
                                             <Label htmlFor="recruiter">Recruiter</Label>
                                         </div>
                                     </RadioGroup>
@@ -344,8 +344,8 @@ function Signup() {
                         <div className="mt-6 text-center text-sm">
                             <p className="text-gray-600">
                                 Already have an account?{' '}
-                                <Link 
-                                    to="/login" 
+                                <Link
+                                    to="/login"
                                     className="font-medium text-blue-600 hover:text-blue-500 hover:underline"
                                 >
                                     Sign in

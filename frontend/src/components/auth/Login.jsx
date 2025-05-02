@@ -75,7 +75,7 @@ function Login() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 p-4">
+        <div className="min-h-screen flex items-center justify-center ">
             <div className="w-full max-w-md">
                 {/* Animated Card */}
                 <div className="bg-white rounded-xl shadow-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">

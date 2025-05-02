@@ -3,7 +3,7 @@ export const filters = {
         "Delhi", "Bengaluru", "Hyderabad", "Chennai", "Mumbai", "Pune", "Jaipur",
         "Kolkata", "Lucknow", "Surat", "Vadodara", "Visakhapatnam", "Nagpur",
         "Patna", "Indore", "Coimbatore", "Agra", "Ahmedabad", "Bhopal", "Chandigarh",
-        "Gurgaon", "Noida", "Faridabad", "Thane", "Kochi", "Mysuru", "Madurai", 
+        "Gurgaon", "Noida", "Faridabad", "Thane", "Kochi", "Mysuru", "Madurai",
         "Nagaland", "Shimla", "Udaipur", "Guwahati", "Bhubaneswar", "Trivandrum",
         "Vijayawada", "Dhanbad", "Meerut", "Bikaner", "Ranchi", "Jammu", "Raipur",
         "Mangalore", "Jodhpur", "Amritsar", "Vijayawada", "Jamshedpur", "Bhilai",

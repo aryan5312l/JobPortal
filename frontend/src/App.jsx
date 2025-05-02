@@ -1,4 +1,4 @@
-import { useEffect} from 'react'
+import { useEffect } from 'react'
 import './App.css'
 import Navbar from './components/shared/Navbar'
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
@@ -24,24 +24,23 @@ import ForgotPassword from './components/auth/ForgotPassword'
 import ResetPassword from './components/auth/ResetPassword'
 import BookmarksPage from './components/jobs/BookmarksPage'
 import AuthRoute from './components/auth/AuthRoute'
+import { DarkModeProvider } from './contexts/DarkModeContext' // Import the provider
+import { Provider as ReduxProvider } from 'react-redux' // If not already wrapped
+import store from './redux/store' // Import your Redux store
 
-
-function App() {
+function AppContent() {
   const dispatch = useDispatch();
   useGetAllJobs();
+  
   useEffect(() => {
     dispatch(fetchUser());
-
   }, [dispatch]);
-
 
   const Layout = () => (
     <div className="min-h-screen flex flex-col">
-
-      <Navbar /> {/* Fixed Navbar */}
-
-      <main className="mt-16"> {/* Adjust the top margin dynamically */}
-        <Outlet /> {/* Renders the current route's component */}
+      <Navbar />
+      <main className="mt-16">
+        <Outlet />
       </main>
       <Footer />
     </div>
@@ -65,25 +64,12 @@ function App() {
           element: <Home />
         },
         {
-          // Protected auth routes (only for non-logged-in users)
           element: <AuthRoute />,
           children: [
-            {
-              path: '/login',
-              element: <Login /> 
-            },
-            {
-              path: '/signup',
-              element: <Signup /> 
-            },
-            {
-              path: "/forgot-password",
-              element: <ForgotPassword/>
-            },
-            {
-              path: "/reset-password/:token",
-              element: <ResetPassword/>
-            }
+            { path: '/login', element: <Login /> },
+            { path: '/signup', element: <Signup /> },
+            { path: "/forgot-password", element: <ForgotPassword/> },
+            { path: "/reset-password/:token", element: <ResetPassword/> }
           ]
         },
         {
@@ -91,20 +77,12 @@ function App() {
           element: <Jobs />
         },
         {
-          // Protected user routes
           element: <ProtectedRoute />,
           children: [
-            {
-              path: '/profile',
-              element: <Profile /> 
-            },
-            {
-              path: '/bookmarks',
-              element: <BookmarksPage/>
-            },
+            { path: '/profile', element: <Profile /> },
+            { path: '/bookmarks', element: <BookmarksPage/> },
           ]
         },
-        // Recruiter Protected Routes
         {
           element: <ProtectedRoute allowedRoles={["recruiter"]} />,
           children: [
@@ -122,23 +100,22 @@ function App() {
     {
       element: <MinimalLayout />,
       children: [
-        {
-          path: '/jobdescription/:id',
-          element: <JobsDescription />,
-        },
-        {
-          path: "/auth/google/callback", 
-          element: <GoogleCallback /> 
-        }
+        { path: '/jobdescription/:id', element: <JobsDescription /> },
+        { path: "/auth/google/callback", element: <GoogleCallback /> }
       ],
     },
   ]);
 
-  return (
-    <>
-      <RouterProvider router={appRouter} />
-    </>
-  )
+  return <RouterProvider router={appRouter} />;
 }
 
-export default App
+// Main App wrapper with all providers
+export default function App() {
+  return (
+    <ReduxProvider store={store}>
+      <DarkModeProvider>
+        <AppContent />
+      </DarkModeProvider>
+    </ReduxProvider>
+  );
+}

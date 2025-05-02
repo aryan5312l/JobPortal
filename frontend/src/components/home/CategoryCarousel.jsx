@@ -42,13 +42,13 @@ function CategoryCarousel() {
   };
 
   return (
-    <section className="w-full py-8 md:py-12 max-w-7xl mx-auto">
+    <section className="w-full py-8 md:py-12 max-w-6xl mx-auto">
       <div className="container px-4 md:px-6">
         <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2">
             Browse by Category
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-white max-w-2xl mx-auto">
             Find your perfect job in these popular categories
           </p>
         </div>

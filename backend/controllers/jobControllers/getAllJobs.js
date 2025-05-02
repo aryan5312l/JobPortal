@@ -1,5 +1,22 @@
 import { Job } from "../../models/jobModel.js";
 
+const industrySynonyms = {
+    "Frontend Developer": ["Frontend", "React", "Angular", "Vue", "HTML", "CSS", "JavaScript"],
+    "Backend Developer": ["Backend", "Node", "Express", "Django", "Flask", "Java Backend", "API Developer"],
+    "Fullstack Developer": ["Fullstack", "MERN", "MEAN", "Java Fullstack", "React Node", "Full-stack"],
+    "Data Scientist": ["Data Scientist", "ML", "Machine Learning", "AI", "Deep Learning", "Data Science"],
+    "UI/UX Designer": ["UI", "UX", "User Interface", "User Experience", "Figma", "Sketch", "Adobe XD"],
+    "Software Engineer": ["Software Engineer", "Software Developer", "Programmer", "Coder"],
+    "DevOps Engineer": ["DevOps", "CI/CD", "Docker", "Kubernetes", "AWS", "Infrastructure"],
+    "Data Analyst": ["Data Analyst", "Power BI", "Tableau", "Excel Analyst"],
+    "Android Developer": ["Android", "Kotlin", "Java Android", "Mobile Developer"],
+    "iOS Developer": ["iOS", "Swift", "Objective-C"],
+    "Machine Learning Engineer": ["Machine Learning", "ML Engineer", "AI Engineer", "TensorFlow", "PyTorch"],
+    "Blockchain Developer": ["Blockchain", "Solidity", "Web3", "Crypto Developer"],
+    
+};
+
+
 export const getAllJobs = async (req, res) => {
     try {
         const keyword = req.query.keyword || "";
@@ -39,11 +56,21 @@ export const getAllJobs = async (req, res) => {
             });
         }
 
-        // Industry filter (assuming "position" field holds the industry/role type)
         if (industryFilters.length > 0) {
-            query.$and.push({
-                title: { $in: Array.isArray(industryFilters) ? industryFilters : [industryFilters] }
+            const expandedKeywords = [];
+
+            const industries = Array.isArray(industryFilters) ? industryFilters : [industryFilters];
+
+            industries.forEach(industry => {
+                const synonyms = industrySynonyms[industry] || [industry];
+                expandedKeywords.push(...synonyms);
             });
+
+            const industryConditions = expandedKeywords.map(keyword => ({
+                title: { $regex: keyword, $options: "i" }
+            }));
+
+            query.$and.push({ $or: industryConditions });
         }
 
         // Salary filter

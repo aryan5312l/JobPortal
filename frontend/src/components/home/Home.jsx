@@ -5,9 +5,11 @@ import LatestJobs from './LatestJobs'
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { useDarkMode } from '../../contexts/DarkModeContext';
 
 
 function Home() {
+    const {darkMode} = useDarkMode();
     const {user} = useSelector(state => state.auth);
     const navigate = useNavigate();
     useEffect(() => {
@@ -17,7 +19,7 @@ function Home() {
     }, [user, navigate]);
   
   return (
-    <div>
+    <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} transition-colors duration-300`}>
         <HeroSection/>
         <CategoryCarousel/>
         <LatestJobs/>

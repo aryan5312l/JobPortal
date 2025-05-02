@@ -52,26 +52,26 @@ function FilterJobs({ isOpen, toggleFilter }) {
     }, [selectedFilters, dispatch, navigate, location.pathname]);
 
     return (
-        <div className={`fixed left-0 z-40 h-full w-[300px] bg-white shadow-lg p-6 transform transition-transform duration-300 ease-in-out 
+        <div className={`fixed left-0 z-40 h-full w-[300px] shadow-lg p-6 transform transition-transform duration-300 ease-in-out 
             ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:w-[280px] lg:shadow-sm lg:sticky h-[calc(100vh-56px)] top-14 overflow-y-auto`}>
 
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-xl font-bold text-gray-800">Filters</h1>
+                <h1 className="text-xl font-bold text-gray-800 dark:text-white">Filters</h1>
                 <button 
                     className="lg:hidden p-1 rounded-full hover:bg-gray-100 transition-colors"
                     onClick={toggleFilter}
                     aria-label="Close filters"
                 >
-                    <X size={20} className="text-gray-600" />
+                    <X size={20} className="text-gray-600 dark:text-white" />
                 </button>
             </div>
 
             {/* Location Filter */}
             <div className="mb-6">
                 <div className='relative mb-3'>
-                    <h2 className="font-semibold text-gray-700 mb-2">Location</h2>
+                    <h2 className="font-semibold text-gray-700 dark:text-white mb-2">Location</h2>
                     <div className="relative">
-                        <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                        <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 " />
                         <input
                             placeholder="Search locations..."
                             value={locationSearch}
@@ -84,7 +84,7 @@ function FilterJobs({ isOpen, toggleFilter }) {
                     {filters.Location
                         .filter(loc => loc.toLowerCase().includes(locationSearch.toLowerCase())).slice(0, 8)
                         .map((location, idx) => (
-                            <div key={idx} className="flex items-center py-2 hover:bg-gray-50 rounded px-1">
+                            <div key={idx} className="flex items-center py-2 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700 rounded px-1">
                                 <Checkbox
                                     id={`location-${idx}`}
                                     checked={selectedFilters.location.includes(location)}
@@ -93,7 +93,7 @@ function FilterJobs({ isOpen, toggleFilter }) {
                                 />
                                 <label 
                                     htmlFor={`location-${idx}`}
-                                    className="ml-3 text-sm text-gray-700 cursor-pointer select-none"
+                                    className="ml-3 text-sm text-gray-700 dark:text-white cursor-pointer select-none"
                                 >
                                     {location}
                                 </label>
@@ -105,7 +105,7 @@ function FilterJobs({ isOpen, toggleFilter }) {
             {/* Industry Filter */}
             <div className="mb-6">
                 <div className='relative mb-3'>
-                    <h2 className="font-semibold text-gray-700 mb-2">Industry</h2>
+                    <h2 className="font-semibold text-gray-700 dark:text-white mb-2">Industry</h2>
                     <div className="relative">
                         <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         <input
@@ -118,9 +118,9 @@ function FilterJobs({ isOpen, toggleFilter }) {
                 </div>
                 <div className="max-h-[200px] overflow-y-auto">
                     {filters.Industry
-                        .filter(ind => ind.toLowerCase().includes(industrySearch.toLowerCase()))
+                        .filter(ind => ind.toLowerCase().includes(industrySearch.toLowerCase())).slice(0, 8)
                         .map((industry, idx) => (
-                            <div key={idx} className="flex items-center py-2 hover:bg-gray-50 rounded px-1">
+                            <div key={idx} className="flex items-center py-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded px-1">
                                 <Checkbox
                                     id={`industry-${idx}`}
                                     checked={selectedFilters.industry.includes(industry)}
@@ -129,7 +129,7 @@ function FilterJobs({ isOpen, toggleFilter }) {
                                 />
                                 <label 
                                     htmlFor={`industry-${idx}`}
-                                    className="ml-3 text-sm text-gray-700 cursor-pointer select-none"
+                                    className="ml-3 text-sm text-gray-700 dark:text-white cursor-pointer select-none"
                                 >
                                     {industry}
                                 </label>
@@ -140,10 +140,10 @@ function FilterJobs({ isOpen, toggleFilter }) {
 
             {/* Salary Range Filter */}
             <div className="mb-6">
-                <h2 className="font-semibold text-gray-700 mb-3">Salary Range</h2>
+                <h2 className="font-semibold text-gray-700 dark:text-white mb-3">Salary Range</h2>
                 <div className="space-y-2">
                     {filters.SalaryRanges.map((range, idx) => (
-                        <div key={idx} className="flex items-center py-2 hover:bg-gray-50 rounded px-1">
+                        <div key={idx} className="flex items-center py-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded px-1">
                             <Checkbox
                                 id={`salary-${idx}`}
                                 checked={selectedFilters.salary.includes(range)}
@@ -152,7 +152,7 @@ function FilterJobs({ isOpen, toggleFilter }) {
                             />
                             <label 
                                 htmlFor={`salary-${idx}`}
-                                className="ml-3 text-sm text-gray-700 cursor-pointer select-none"
+                                className="ml-3 text-sm text-gray-700 dark:text-white cursor-pointer select-none"
                             >
                                 {range}
                             </label>
