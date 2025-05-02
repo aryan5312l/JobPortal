@@ -6,15 +6,20 @@ export const fetchUser = createAsyncThunk('auth/validate', async (_, { rejectWit
         const response = await fetch(`${import.meta.env.VITE_USER_API_END_POINT}/auth/validate`, {
             method: "GET",
             credentials: 'include',
-            
+
         });
-        if (!response.ok) throw new Error('Failed to validate session');
-        
-        return await response.json();
-        
+        if (!response.ok) {
+            const error = new Error('Failed to validate session');
+            error.status = response.status;
+            throw error;
+          }
+          return await response.json();
+
     } catch (error) {
-        console.log("error in fetch user thunk", error);
-        return rejectWithValue(error.message);
+        if (error.status !== 401) {
+            console.error('Error in fetch user thunk:', error);
+          }
+          return rejectWithValue(error.message);
     }
 });
 
@@ -50,5 +55,5 @@ const authSlice = createSlice({
 
 })
 
-export const {setLoading, setUser} = authSlice.actions;
+export const { setLoading, setUser } = authSlice.actions;
 export default authSlice.reducer

@@ -222,15 +222,18 @@ function LatestJobCards() {
                                 {/* Logo and Save Icon */}
                                 <div className="flex items-center gap-4 mb-4">
                                     <img
-                                        src={item?.company?.logo || item?.companyLogo || "https://via.placeholder.com/40"}
-                                        alt={item?.companyName || "Company Logo"}
+                                        src={item?.company?.logo || item?.companyLogo || ""}
+                                        alt={item?.companyName || item?.company?.name ||  "Company Name"}
                                         className="w-12 h-12 rounded-full border object-cover"
                                         onError={(e) => {
-                                            e.target.src = "https://via.placeholder.com/40";
-                                        }}
+                                            
+                                            if (e.target.src !== "https://via.placeholder.com/40") {
+                                              e.target.src = "https://via.placeholder.com/40";
+                                            }
+                                          }}
                                     />
                                     <div>
-                                        <h2 className="text-lg font-semibold">{item?.companyName || "Unknow Company"}</h2>
+                                        <h2 className="text-lg font-semibold">{item?.companyName || item?.company?.name || "Unknow Company"}</h2>
                                         <p className="text-sm text-gray-500 dark:text-gray-300">{item?.location || "Location not specified"}</p>
                                     </div>
                                 </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect} from 'react'
 import './App.css'
 import Navbar from './components/shared/Navbar'
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom'
@@ -23,6 +23,7 @@ import GoogleCallback from './components/auth/GoogleCallback'
 import ForgotPassword from './components/auth/ForgotPassword'
 import ResetPassword from './components/auth/ResetPassword'
 import BookmarksPage from './components/jobs/BookmarksPage'
+import AuthRoute from './components/auth/AuthRoute'
 
 
 function App() {
@@ -64,29 +65,48 @@ function App() {
           element: <Home />
         },
         {
-          path: '/login',
-          element: <Login /> 
-        },
-        {
-          path: '/signup',
-          element: <Signup /> 
+          // Protected auth routes (only for non-logged-in users)
+          element: <AuthRoute />,
+          children: [
+            {
+              path: '/login',
+              element: <Login /> 
+            },
+            {
+              path: '/signup',
+              element: <Signup /> 
+            },
+            {
+              path: "/forgot-password",
+              element: <ForgotPassword/>
+            },
+            {
+              path: "/reset-password/:token",
+              element: <ResetPassword/>
+            }
+          ]
         },
         {
           path: '/jobs',
           element: <Jobs />
         },
         {
-          path: '/profile',
-          element: <Profile /> 
+          // Protected user routes
+          element: <ProtectedRoute />,
+          children: [
+            {
+              path: '/profile',
+              element: <Profile /> 
+            },
+            {
+              path: '/bookmarks',
+              element: <BookmarksPage/>
+            },
+          ]
         },
-        {
-          path: '/bookmarks',
-          element: <BookmarksPage/>
-        },
-
         // Recruiter Protected Routes
         {
-          element: <ProtectedRoute allowedRoles={["recruiter"]} />, // Only recruiters
+          element: <ProtectedRoute allowedRoles={["recruiter"]} />,
           children: [
             { path: "/recruiter/companies", element: <Companies /> },
             { path: "/recruiter/createcompany", element: <CreateCompany /> },
@@ -109,19 +129,10 @@ function App() {
         {
           path: "/auth/google/callback", 
           element: <GoogleCallback /> 
-        },
-        {
-          path: "/forgot-password",
-          element: <ForgotPassword/>
-        },
-        {
-          path: "/reset-password/:token",
-          element: <ResetPassword/>
         }
       ],
     },
-
-  ])
+  ]);
 
   return (
     <>
