@@ -11,6 +11,8 @@ import { verifyToken } from "../verifyToken.js";
 import { requestOTP, verifyOTP } from "../controllers/userControllers/otpAuth.js";
 import rateLimit from "express-rate-limit";
 import { forgotPassword, resetPassword } from "../controllers/userControllers/forgetPassword.js";
+import { loginValidation, registerValidation } from "../validators/authValidators.js";
+import { validateRequest } from "../middlewares/validateRequest.js";
 
 const router = express.Router();
 
@@ -20,8 +22,8 @@ const otpLimiter = rateLimit({
     message: { error: "Too many OTP requests. Try again later." }
 });
 
-router.route('/register').post(singleUpload ,register);
-router.route('/login').post(login);
+router.route('/register').post(singleUpload, registerValidation, validateRequest, register);
+router.route('/login').post(loginValidation, validateRequest, login);
 router.route('/logout').get(logout)
 router.route('/profile/update').post(isAuthenticated, singleUpload, updateProfile);
 router.route('/auth/validate').get(verifyToken);
