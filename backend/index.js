@@ -59,7 +59,9 @@ app.use("/api/v1/company", companyRouter);
 app.use("/api/v1/job", jobRouter);
 app.use("/api/v1/application", applicationRouter);
 app.use("/api/v1/bookmark", bookmarkRouter);
-
+app.get("/api/health", (req, res) => {
+    res.status(200).send("ok");
+})
 app.use(express.static(path.join(__dirname, "/frontend/dist")));
 app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "/frontend/dist/index.html"));
