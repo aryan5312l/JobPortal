@@ -24,9 +24,9 @@ import ForgotPassword from './components/auth/ForgotPassword'
 import ResetPassword from './components/auth/ResetPassword'
 import BookmarksPage from './components/jobs/BookmarksPage'
 import AuthRoute from './components/auth/AuthRoute'
-import { DarkModeProvider } from './contexts/DarkModeContext' // Import the provider
-import { Provider as ReduxProvider } from 'react-redux' // If not already wrapped
-import store from './redux/store' // Import your Redux store
+import { DarkModeProvider } from './contexts/DarkModeContext' 
+import { Provider as ReduxProvider } from 'react-redux' 
+import store from './redux/store' 
 
 function AppContent() {
   const dispatch = useDispatch();

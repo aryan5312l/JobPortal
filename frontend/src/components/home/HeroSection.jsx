@@ -19,18 +19,12 @@ function HeroSection() {
       navigate(`/?page=1`);
     }
   };
-  /*
-      const handleKeyDown = (event) => {
-        if (event.key === "Enter") {
-            handleSearch();
-        }
-    };
-  */
+ 
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      dispatch(fetchJobs(searchKeyword)); // Fetch results dynamically
-    }, 300); // Debounce time (adjust as needed)
+      dispatch(fetchJobs(searchKeyword)); 
+    }, 300); 
 
     return () => clearTimeout(delayDebounceFn); // Cleanup function
   }, [searchKeyword, dispatch]);

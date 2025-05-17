@@ -28,7 +28,7 @@ function LatestJobCards() {
     const currentPage = parseInt(searchParams.get("page")) || 1; // Get the page number from the URL
 
     const [jobs, setJobs] = useState([]);
-    //const [page, setPage] = useState(1);
+    
     const [totalPages, setTotalPages] = useState(1);
     const limit = 9;
 
@@ -117,11 +117,10 @@ function LatestJobCards() {
                 });
 
                 if (res.data.success) {
-                    // Assuming backend returns { success: true, bookmarks: [...] }
+                    
                     const { bookmarks } = res.data;
                     console.log("Bookmarked jobs fetched successfully:", bookmarks);
 
-                    // Dispatch to Redux - adjust based on your actual backend response
                     const jobIds = bookmarks.map(b => b.jobId?._id || b.jobId);
                     dispatch(fetchBookmarkedJobs.fulfilled(jobIds));
                 }

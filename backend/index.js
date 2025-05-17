@@ -13,6 +13,8 @@ import session from "express-session";
 import passport from "passport";
 import authRoutes from "./routes/authRoutes.js";
 
+import './cron/fetchJobCron.js'
+
 const app = express();
 dotenv.config();
 
@@ -49,7 +51,7 @@ app.get('/', (req, res) => {
 //     next();
 // });
 
-import './cron/fetchJobCron.js'
+
 
 //api's
 app.use("/api/v1/user", userRouter);
