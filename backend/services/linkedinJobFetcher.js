@@ -29,6 +29,8 @@ const location = "India";
 const dateSincePosted = "past week";
 
 export async function fetchAndSaveJobs() {
+    console.log('🔁 fetchAndSaveJobs initialized at:', new Date().toISOString());
+
     try {
         for (const keyword of industries) {
             for (const experienceLevel of experienceLevels) {
@@ -42,7 +44,7 @@ export async function fetchAndSaveJobs() {
                             remoteFilter,
                             salary: '0', // optional, or remove
                             experienceLevel,
-                            limit: '25',
+                            limit: '10',
                             sortBy: 'recent',
                             page: '1',
                         };
