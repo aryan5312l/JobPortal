@@ -44,7 +44,7 @@ export async function fetchAndSaveJobs() {
                             remoteFilter,
                             salary: '0', // optional, or remove
                             experienceLevel,
-                            limit: '10',
+                            limit: '5',
                             sortBy: 'recent',
                             page: '1',
                         };
