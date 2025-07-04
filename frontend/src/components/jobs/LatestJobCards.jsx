@@ -1,4 +1,3 @@
-
 import { Badge } from "@/components/ui/badge"
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -9,14 +8,15 @@ import { Tooltip } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { SkeletonJobCard } from "./SkeletonJobCard";
+import { setAllJobs } from "../../redux/jobSlice";
 //import { parse } from "path";
 
 //const random = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21];
 
 function LatestJobCards() {
     const { user } = useSelector(store => store.auth);
-    //const { filteredJobs } = useSelector(store => store.job);
     const { bookmarkedJobs } = useSelector(store => store.bookmark);
+    const { allJobs } = useSelector(store => store.job); // Use allJobs from Redux
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
@@ -27,8 +27,6 @@ function LatestJobCards() {
     const keyword = searchParams.get("keyword") || ""; // Get the keyword from the URL
     const currentPage = parseInt(searchParams.get("page")) || 1; // Get the page number from the URL
 
-    const [jobs, setJobs] = useState([]);
-    
     const [totalPages, setTotalPages] = useState(1);
     const limit = 9;
 
@@ -61,8 +59,8 @@ function LatestJobCards() {
                     });
 
                     if (res.data.success) {
-                        setJobs(res.data.jobs);
                         setTotalPages(res.data.totalPages);
+                        dispatch(setAllJobs(res.data.jobs)); // Update allJobs in Redux
                     }
                 } catch (error) {
                     console.error("Error fetching jobs:", error);
@@ -75,7 +73,7 @@ function LatestJobCards() {
         }, 400);
 
         return () => clearTimeout(delayDebounce);
-    }, [keyword, currentPage, searchParams]);
+    }, [keyword, currentPage, searchParams, dispatch]);
 
 
 
@@ -195,9 +193,9 @@ function LatestJobCards() {
             {/* Job Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-8 px-8">
                 {loading ? Array.from({ length: limit }).map((_, i) => <SkeletonJobCard key={i} />)
-                    : jobs.length <= 0 ? "No Jobs are available" : jobs.map((item, index) => {
+                    : allJobs.length <= 0 ? "No Jobs are available" : allJobs.map((item, index) => {
                         const isFirst = index === 0;
-                        const isLast = index === jobs.length - 1;
+                        const isLast = index === allJobs.length - 1;
 
                         return (
 
