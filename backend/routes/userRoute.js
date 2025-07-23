@@ -13,6 +13,7 @@ import rateLimit from "express-rate-limit";
 import { forgotPassword, resetPassword } from "../controllers/userControllers/forgetPassword.js";
 import { loginValidation, registerValidation } from "../validators/authValidators.js";
 import { validateRequest } from "../middlewares/validateRequest.js";
+import { parseResumeWithGemini } from "../controllers/userControllers/resumeParserController.js";
 
 const router = express.Router();
 
@@ -27,6 +28,7 @@ router.route('/login').post(loginValidation, validateRequest, login);
 router.route('/logout').get(logout)
 router.route('/profile/update').post(isAuthenticated, singleUpload, updateProfile);
 router.route('/auth/validate').get(verifyToken);
+router.route('/resume/parse').post(isAuthenticated, parseResumeWithGemini);
 
 //OTP based login routes
 router.route("/otp-login").post(otpLimiter, requestOTP);
