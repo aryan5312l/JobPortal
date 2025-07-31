@@ -76,6 +76,9 @@ function UpdateProfileDialog({ open, setOpen }) {
 
             if (res.data.success) {
                 dispatch(setUser(res.data.user));
+                await axios.post(`${import.meta.env.VITE_USER_API_END_POINT}/resume/parse`, {}, {
+                    withCredentials: true
+                } )
                 toast({
                     title: res.data.message,
                     variant: "success",

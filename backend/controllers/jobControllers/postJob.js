@@ -1,4 +1,5 @@
 import { Job } from "../../models/jobModel.js";
+import { generateEmbedding } from "../../services/embeddingService.js";
 
 export const postJob = async(req, res) => {
     try {
@@ -23,6 +24,18 @@ export const postJob = async(req, res) => {
             });
         }
 
+        // Generate job embedding
+        const jobText = `
+            Title: ${title}
+            Description: ${description}
+            Requirements: ${requirements}
+            Experience Level: ${experienceLevel}
+            Job Type: ${jobType}
+            Location: ${location}
+        `;
+        
+        const jobEmbedding = await generateEmbedding(jobText);
+
         const job = await Job.create({
             title,
             description,
@@ -33,7 +46,8 @@ export const postJob = async(req, res) => {
             experienceLevel,
             position,
             company: companyId,
-            created_by: userId
+            created_by: userId,
+            embedding: jobEmbedding
         });
 
         return res.status(201).json({
@@ -43,5 +57,10 @@ export const postJob = async(req, res) => {
         })
     } catch (error) {
         console.log(error);
+        return res.status(500).json({
+            message: "Error creating job",
+            success: false,
+            error: error.message
+        });
     }
 }

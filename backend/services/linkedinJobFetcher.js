@@ -1,5 +1,6 @@
 import linkedIn from 'linkedin-jobs-api';
 import { Job } from '../models/jobModel.js';
+import { generateEmbedding } from './embeddingService.js';
 
 const industries = [
     "Frontend Developer", "Backend Developer", "Fullstack Developer", "Data Scientist",
@@ -42,7 +43,7 @@ export async function fetchAndSaveJobs() {
                             dateSincePosted,
                             jobType,
                             remoteFilter,
-                            salary: '0', // optional, or remove
+                            salary: '0', // optional
                             experienceLevel,
                             limit: '5',
                             sortBy: 'recent',
@@ -81,8 +82,21 @@ export async function fetchAndSaveJobs() {
                             });
 
                             try {
+                                // Generate job embedding
+                                const jobText = `
+                                    Title: ${jobData.position || 'Untitled'}
+                                    Description: ${jobData.description || 'No description provided.'}
+                                    Requirements: ${Array.isArray(jobData.requirements) ? jobData.requirements.join(', ') : ''}
+                                    Experience Level: ${jobData.experienceLevel || 'Not specified'}
+                                    Job Type: ${jobData.jobType || 'Not specified'}
+                                    Location: ${jobData.location || 'Not specified'}
+                                `;
+                                
+                                const jobEmbedding = await generateEmbedding(jobText);
+                                job.embedding = jobEmbedding;
+                                
                                 await job.save();
-                                console.log(`Saved: ${position} at ${companyName}`);
+                                console.log(`Saved: ${position} at ${companyName} with embedding`);
                             } catch (err) {
                                 console.error('Error saving job:', err.message);
                             }

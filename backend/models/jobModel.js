@@ -49,6 +49,7 @@ const jobSchema = new mongoose.Schema({
     companyLogo: { type: String },
     companyName: { type: String },
     jobUrl: { type: String },
+    embedding: {type: [Number], default: null},
     expiresAt: {
         type: Date,
         default: () => new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), // 10 days from now

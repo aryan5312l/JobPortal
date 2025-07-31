@@ -3,7 +3,7 @@ import { fetchAndSaveJobs } from '../services/linkedinJobFetcher.js';
 
 console.log('Starting cron job to fetch LinkedIn jobs...');
 
-cron.schedule('0 2 * * *', async () => {
+cron.schedule('14 0 * * *', async () => {
   const today = new Date();
   const day = today.getDate();
 

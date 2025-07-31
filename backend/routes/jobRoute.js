@@ -6,6 +6,7 @@ import { getAllJobs } from "../controllers/jobControllers/getAllJobs.js";
 import { getAdminJobs } from "../controllers/jobControllers/getAdminJobs.js";
 import { getJobById } from "../controllers/jobControllers/getJobById.js";
 import { fetchAndSaveJobs } from "../services/linkedinJobFetcher.js";
+import { suggestJobs } from "../controllers/jobControllers/suggestJobs.js";
 
 const router = express.Router();
 
@@ -13,6 +14,7 @@ router.route('/post').post(isAuthenticated, postJob);
 router.route('/get').get(getAllJobs);
 router.route('/getadminjobs').get(isAuthenticated, getAdminJobs)
 router.route('/get/:id').get(isAuthenticated, getJobById);
+router.route('/recommendations').get(isAuthenticated, suggestJobs)
 
 router.get('/fetch-jobs', async (req, res) => {
     try {

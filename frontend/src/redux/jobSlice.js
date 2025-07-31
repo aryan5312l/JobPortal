@@ -1,15 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+    allJobs: [],
+    filteredJobs: [],
+    recommendedJobs: [],
+    loading: false,
+    error: null,
+    actionRequired: false,
+    retryable: false,
+    pagination: {
+        currentPage: 1,
+        totalPages: 1,
+        totalJobs: 0,
+        hasMore: false
+    }
+};
+
 const jobSlice = createSlice({
     name: "job",
-    initialState: {
-        allJobs: [],
-        filteredJobs: [] // Added for filtering
-    },
+    initialState,
     reducers: {
         setAllJobs: (state, action) => {
             state.allJobs = action.payload;
-            state.filteredJobs = action.payload; // Initialize with all jobs
+            state.filteredJobs = action.payload;
         },
         updateJobApplications: (state, action) => {
             const { jobId, applicationId } = action.payload;
@@ -29,14 +42,12 @@ const jobSlice = createSlice({
         },
         setFilteredJobs: (state, action) => {
             const { location, industry, salary } = action.payload;
-
             const salaryRanges = {
                 "3-6 LPA": [3, 6],
                 "6-10 LPA": [6, 10],
                 "10-15 LPA": [10, 15],
                 "15+ LPA": [15, Infinity]
             };
-
             state.filteredJobs = state.allJobs.filter(job => {
                 const locationMatch = location.length === 0 || location.includes(job.location);
                 const industryMatch = industry.length === 0 || industry.includes(job.title);
@@ -44,15 +55,35 @@ const jobSlice = createSlice({
                     const rangeValues = salaryRanges[range];
                     if (!rangeValues) return false;
                     const [min, max] = salaryRanges[range];
-
                     return job.salary >= min && job.salary <= max;
                 });
-
                 return locationMatch && industryMatch && salaryMatch;
             });
+        },
+        // Recommended jobs reducers
+        FETCH_RECOMMENDATIONS_REQUEST: (state) => {
+            state.loading = true;
+            state.error = null;
+            state.actionRequired = false;
+            state.retryable = false;
+        },
+        FETCH_RECOMMENDATIONS_SUCCESS: (state, action) => {
+            state.loading = false;
+            state.error = null;
+            state.recommendedJobs = action.payload.jobs.map(j => j.job || j); 
+            state.allJobs = action.payload.jobs.map(j => j.job || j);// flatten if needed
+            state.pagination = action.payload.pagination;
+            state.actionRequired = false;
+            state.retryable = false;
+        },
+        FETCH_RECOMMENDATIONS_FAILURE: (state, action) => {
+            state.loading = false;
+            state.error = action.payload.error;
+            state.actionRequired = !!action.payload.actionRequired;
+            state.retryable = action.payload.retryable ?? true;
         }
     }
 });
 
-export const { setAllJobs, updateJobApplications, filterJobs, setFilteredJobs } = jobSlice.actions;
+export const { setAllJobs, updateJobApplications, filterJobs, setFilteredJobs, FETCH_RECOMMENDATIONS_REQUEST, FETCH_RECOMMENDATIONS_SUCCESS, FETCH_RECOMMENDATIONS_FAILURE } = jobSlice.actions;
 export default jobSlice.reducer;

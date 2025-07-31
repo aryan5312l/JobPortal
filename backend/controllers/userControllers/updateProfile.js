@@ -1,6 +1,7 @@
 import { User } from "../../models/userModel.js";
 import cloudinary from "../../utils/cloudinary.js";
 import getDataUri from "../../utils/datauri.js";
+import { parseResumeWithGemini } from "./resumeParserController.js";
 
 export const updateProfile = async (req, res) => {
     try {

@@ -32,7 +32,8 @@ const userSchema = new mongoose.Schema({
         profilePhoto: {
             type: String,
             default: ''
-        }
+        },
+        embedding: {type: [Number], default: null},
     },
 }, {timestamps: true})
 

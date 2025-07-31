@@ -4,7 +4,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   User, LogOut, Menu, X, Bell, Search, Loader2, Sun, Moon,
-  Bookmark
+  Bookmark, Sparkles
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -216,6 +216,12 @@ const Navbar = () => {
               <div className="flex items-center gap-1">
                 <NavLink to="/">Home</NavLink>
                 <NavLink to="/jobs">Jobs</NavLink>
+                {user && (
+                  <NavLink to="/recommended-jobs" className="flex items-center gap-1">
+                    <Sparkles className="h-4 w-4" />
+                    AI Jobs
+                  </NavLink>
+                )}
                 {user?.role === 'recruiter' && (
                   <>
                     <NavLink to="/recruiter/companies">Companies</NavLink>

@@ -23,6 +23,7 @@ import GoogleCallback from './components/auth/GoogleCallback'
 import ForgotPassword from './components/auth/ForgotPassword'
 import ResetPassword from './components/auth/ResetPassword'
 import BookmarksPage from './components/jobs/BookmarksPage'
+import RecommendedJobs from './components/jobs/RecommendedJobs'
 import AuthRoute from './components/auth/AuthRoute'
 import { DarkModeProvider } from './contexts/DarkModeContext' 
 import { Provider as ReduxProvider } from 'react-redux' 
@@ -81,6 +82,7 @@ function AppContent() {
           children: [
             { path: '/profile', element: <Profile /> },
             { path: '/bookmarks', element: <BookmarksPage/> },
+            { path: '/recommended-jobs', element: <RecommendedJobs /> },
           ]
         },
         {

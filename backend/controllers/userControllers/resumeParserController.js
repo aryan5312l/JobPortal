@@ -6,6 +6,7 @@ import path from "path";
 import { Buffer } from "buffer";
 //import pdf from "pdf-parse";
 import { PdfReader } from "pdfreader";
+import { generateEmbedding } from "../../services/embeddingService.js";
 
 
 async function parsePdf(buffer) {
@@ -83,6 +84,7 @@ export const parseResumeWithGemini = async (req, res) => {
 Resume text:
 ${text.substring(0, 50000)}`; // Limiting to first 50k chars to avoid token limits
 
+        let parsed;
         try {
             const result = await model.generateContent(prompt);
             const responseText = result.response.text();
@@ -96,20 +98,69 @@ ${text.substring(0, 50000)}`; // Limiting to first 50k chars to avoid token limi
                 cleanResponse = cleanResponse.slice(3, -3).trim();
             }
 
-            const parsed = JSON.parse(cleanResponse);
-            return res.json({ parsed });
+            parsed = JSON.parse(cleanResponse);
+
+            if (!parsed.skills || !Array.isArray(parsed.skills)) {
+                throw new Error("Invalid response structure from Gemini");
+            }
         } catch (geminiError) {
-            console.error("Gemini API error:", geminiError);
+            console.error("Gemini processing failed:", geminiError);
             return res.status(500).json({
-                message: "Error processing resume with Gemini.",
+                success: false,
+                message: "Failed to analyze resume content",
                 error: geminiError.message
             });
         }
 
+        // Generate and store embedding
+        const candidateText = `
+            Skills: ${parsed.skills.join(", ")}
+            Experience: ${parsed.experience.map((exp) =>
+            `${exp.title} at ${exp.company} (${exp.years})`
+        ).join(", ")}
+            Education: ${parsed.education.map((edu) =>
+            `${edu.degree} at ${edu.institution} (${edu.year})`
+        ).join(", ")}
+        `;
+
+        try {
+            const embedding = await generateEmbedding(candidateText);
+
+            await User.findByIdAndUpdate(req.id, {
+                $set: {
+                    "profile.embedding": embedding,
+                    "profile.parsedResume": parsed
+                }
+            });
+
+            return res.json({
+                success: true,
+                data: {
+                    parsed,
+                    embedding: embedding.slice(0, 5) // Return first few dims for preview
+                },
+                meta: {
+                    textLength: text.length,
+                    processedChars: Math.min(text.length, 30000),
+                    embeddingDimensions: embedding.length
+                }
+            });
+
+        } catch (embeddingError) {
+            console.error("Embedding generation failed:", embeddingError);
+            return res.status(500).json({
+                success: false,
+                message: "Failed to generate profile embedding",
+                error: embeddingError.message,
+                parsed // Still return parsed data even if embedding failed
+            });
+        }
+
     } catch (err) {
-        console.error("Resume parsing error:", err);
+        console.error("Resume processing error:", err);
         return res.status(500).json({
-            message: "Error parsing resume.",
+            success: false,
+            message: "Internal server error",
             error: err.message
         });
     }
