@@ -1,5 +1,6 @@
 import { findBestJobs } from "../../services/matchingService.js";
 import { User } from "../../models/userModel.js";
+import redisClient from "../../utils/redisClient.js";
 
 export const suggestJobs = async (req, res) => {
     try {
@@ -17,7 +18,19 @@ export const suggestJobs = async (req, res) => {
             });
         }
 
-        const recommendJobs = await findBestJobs(user.profile.embedding);
+        const cacheKey = `recommended_jobs:${user._id}`;
+        let recommendJobs;
+
+        const cachedData = await redisClient.get(cacheKey);
+        if(cachedData){
+            console.log(`🔁 Cache hit for user ${user._id}`);
+            recommendJobs = JSON.parse(cachedData);
+        }else{
+            console.log(`🔁 Cache does hit for user ${user._id}`);
+            recommendJobs = await findBestJobs(user.profile.embedding);
+            // Cache for 1 hour
+            await redisClient.setEx(cacheKey, 3600, JSON.stringify(recommendJobs));
+        }
 
         const total = recommendJobs.length;
         const paginatedJobs = recommendJobs.slice(skip, skip + limit);
