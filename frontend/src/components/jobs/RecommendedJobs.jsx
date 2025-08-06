@@ -15,7 +15,8 @@ const RecommendedJobs = () => {
     const currentPage = parseInt(searchParams.get('page')) || 1;
 
     // Selectors
-    const jobs = useSelector((state) => state.job.recommendedJobs);
+    const jobs = useSelector((state) => state.job.recommendedJobsByPage[currentPage] || []);
+    //console.log(jobs);
     const loading = useSelector((state) => state.job.loading);
     const error = useSelector((state) => state.job.error);
     const actionRequired = useSelector((state) => state.job.actionRequired);
@@ -33,15 +34,15 @@ const RecommendedJobs = () => {
     };
 
     const renderPagination = useMemo(() => (
-        
+
 
         <div className="flex justify-center items-center gap-4 mt-8">
             <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage <= 1 || loading}
                 className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 ${currentPage <= 1 || loading
-                        ? "bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed"
-                        : "bg-purple-600 dark:bg-purple-700 text-white hover:bg-purple-700 dark:hover:bg-purple-600"
+                    ? "bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed"
+                    : "bg-purple-600 dark:bg-purple-700 text-white hover:bg-purple-700 dark:hover:bg-purple-600"
                     }`}
             >
                 ← Previous
@@ -55,14 +56,25 @@ const RecommendedJobs = () => {
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage >= pagination.totalPages || loading}
                 className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 ${currentPage >= pagination.totalPages || loading
-                        ? "bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed"
-                        : "bg-purple-600 dark:bg-purple-700 text-white hover:bg-purple-700 dark:hover:bg-purple-600"
+                    ? "bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed"
+                    : "bg-purple-600 dark:bg-purple-700 text-white hover:bg-purple-700 dark:hover:bg-purple-600"
                     }`}
             >
                 Next →
             </button>
         </div>
     ), [currentPage, pagination.totalPages, loading]);
+
+    useEffect(() => {
+        const preloadNext = () => {
+            const next = currentPage + 1;
+            if (next <= pagination.totalPages) {
+                dispatch(fetchRecommendedJobs(next));
+            }
+        };
+        preloadNext();
+    }, [dispatch, currentPage, pagination.totalPages]);
+
 
     if (loading) {
         return (
@@ -166,9 +178,9 @@ const RecommendedJobs = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {jobs.map((job) => (
                     <JobCard
-                        key={job._id}
-                        job={job}
-                        onClick={() => navigate(`/jobdescription/${job._id}`)}
+                        key={job.job._id}
+                        job={job.job}
+                        onClick={() => navigate(`/jobdescription/${job.job._id}`)}
                         showBookmark={true}
                         showMatchScore={true}
                         matchScore={job.matchScore} // Ensure this is passed

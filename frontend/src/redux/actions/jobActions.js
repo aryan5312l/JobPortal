@@ -15,10 +15,14 @@ export const fetchJobs = (keyword = "") => async (dispatch) => {
     }
 };
 
-export const fetchRecommendedJobs = (page = 1, limit = 9) => async (dispatch) => {
+export const fetchRecommendedJobs = (page = 1, limit = 9) => async (dispatch, getState) => {
+
+    const cached = getState().job.recommendedJobsByPage?.[page];
+    if (cached) return;
+
     try {
         dispatch(FETCH_RECOMMENDATIONS_REQUEST());
-        
+
         const response = await axios.get(
             `${import.meta.env.VITE_JOB_API_END_POINT}/recommendations`,
             {
@@ -30,6 +34,7 @@ export const fetchRecommendedJobs = (page = 1, limit = 9) => async (dispatch) =>
 
         if (response.data.jobs) {
             dispatch(FETCH_RECOMMENDATIONS_SUCCESS({
+                page,
                 jobs: response.data.jobs,
                 pagination: {
                     currentPage: response.data.currentPage,

@@ -216,12 +216,12 @@ const Navbar = () => {
               <div className="flex items-center gap-1">
                 <NavLink to="/">Home</NavLink>
                 <NavLink to="/jobs">Jobs</NavLink>
-                {user && (
+                {/* {user && (
                   <NavLink to="/recommended-jobs" className="flex items-center gap-1">
                     <Sparkles className="h-4 w-4" />
                     AI Jobs
                   </NavLink>
-                )}
+                )} */}
                 {user?.role === 'recruiter' && (
                   <>
                     <NavLink to="/recruiter/companies">Companies</NavLink>

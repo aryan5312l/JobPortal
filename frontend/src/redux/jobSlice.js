@@ -3,11 +3,12 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     allJobs: [],
     filteredJobs: [],
-    recommendedJobs: [],
+
     loading: false,
     error: null,
     actionRequired: false,
     retryable: false,
+    recommendedJobsByPage: {},
     pagination: {
         currentPage: 1,
         totalPages: 1,
@@ -70,12 +71,16 @@ const jobSlice = createSlice({
         FETCH_RECOMMENDATIONS_SUCCESS: (state, action) => {
             state.loading = false;
             state.error = null;
-            state.recommendedJobs = action.payload.jobs.map(j => j.job || j); 
-            state.allJobs = action.payload.jobs.map(j => j.job || j);// flatten if needed
+            state.recommendedJobsByPage = {
+                ...state.recommendedJobsByPage,
+                [action.payload.page]: action.payload.jobs,
+            };
+            state.allJobs = action.payload.jobs.map(j => j.job || j); // flatten if needed
             state.pagination = action.payload.pagination;
             state.actionRequired = false;
             state.retryable = false;
         },
+
         FETCH_RECOMMENDATIONS_FAILURE: (state, action) => {
             state.loading = false;
             state.error = action.payload.error;
